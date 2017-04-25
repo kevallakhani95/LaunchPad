@@ -39,7 +39,6 @@ if(!isset($_SESSION['user_session']))
 
 $user_name = $_SESSION['user_session'];
 
-<<<<<<< HEAD
 if(isset($_POST['btnlogout']))
 {
   session_destroy();
@@ -55,9 +54,6 @@ if(isset($_POST['bnsubmit']))
     $_SESSION['search_word'] = $searchtext;
 }
 
-=======
-?>
->>>>>>> origin/master
 
  echo'
 	<nav class="navbar navbar-default">
