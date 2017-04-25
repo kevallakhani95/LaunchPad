@@ -8,8 +8,22 @@
     <title>LaunchPad</title>
 
     <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">    
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+   
+   <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+   <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
+    <style>
+    .round_img {
+    border-radius: 50%;
+    max-width: 150px;
+    border: 0px solid #ccc;
+
+    }
+    </style>
 </head>
 
 <body>
@@ -23,7 +37,7 @@ if(!isset($_SESSION['user_session']))
                     window.location = 'index.php';</script>";
 }
 
-$user_name = $_SESSION['userSession'];
+$user_name = $_SESSION['user_session'];
 
 if(isset($_POST['btnlogout']))
 {
@@ -40,8 +54,8 @@ if(isset($_POST['bnsubmit']))
     $_SESSION['search_word'] = $searchtext;
 }
 
-?>
 
+ echo'
 	<nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -51,14 +65,14 @@ if(isset($_POST['bnsubmit']))
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Brand</a>
+      <a class="navbar-brand" href="#">LaunchPad </a>
     </div>
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
+        <li class="active"><a href="#">Recent Projects <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Upload Project</a></li>
+        <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             <li><a href="#">Action</a></li>
@@ -69,7 +83,8 @@ if(isset($_POST['bnsubmit']))
             <li class="divider"></li>
             <li><a href="#">One more separated link</a></li>
           </ul>
-        </li>
+        </li> -->
+
       </ul>
       <form class="navbar-form navbar-left" role="search">
         <div class="form-group">
@@ -77,11 +92,18 @@ if(isset($_POST['bnsubmit']))
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
+      <form class="navbar-form navbar-right" role="search">
+        <button type="submit" class="btn btn-default">Logout</button>
+      </form>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
+        <li><a class="navbar-brand" href="#">
+        <img class ="round_img dropdown-toggle" src="pp1.jpg" width="30" height="30" alt="">
+        </a></li>
       </ul>
     </div>
   </div>
-</nav>
+</nav>'
+
+?>
 </body>
 </html>
