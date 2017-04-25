@@ -1,7 +1,7 @@
 <html>
 <head>
 
-	<meta charset="utf-8">
+  <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -61,7 +61,7 @@ if(isset($_POST['bnsubmit']))
 
 ?>
 
-	<nav class="navbar navbar-default">
+  <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
@@ -100,9 +100,18 @@ if(isset($_POST['bnsubmit']))
         <button type="Submit" class="btn btn-info" name="btn_logout" >Logout</button>
       </form>
       <ul class="nav navbar-nav navbar-right">
-        <li><a class="navbar-brand" href="#">
-        <?php echo '<img class="round_img" height="40" width="40" src="data:image;base64,'.$row[5].'" style="margin-top: -9px">';
+        <li><a class="navbar-brand" href="user_profile.php">
+        <?php
+        if(!empty($row[5]))
+        {
+          echo '<img class="round_img" height="40" width="40" src="data:image;base64,'.$row[5].'" style="margin-top: -9px" alt="">';
+        }
+        else
+        {
+          echo '<img class="round_img" height="40" width="40" src="default-user-image.png" style="margin-top: -9px" alt="">'; 
+        }
         ?>
+
         </a></li>
       </ul>
     </div>
