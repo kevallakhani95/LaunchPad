@@ -39,11 +39,15 @@ if(!isset($_SESSION['user_session']))
 
 $user_name = $_SESSION['user_session'];
 
-if(isset($_POST['btnlogout']))
+$sqlquery=$conn->query("select * from users where uname='$user_name'");   
+$row = $sqlquery->fetch_array();
+
+if(isset($_POST['btn_logout']))
 {
   session_destroy();
-  $URL="index.php";
-  echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
+  // $URL="index.php";
+  // echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
+  header("Location: index.php");
 }
 
 if(isset($_POST['bnsubmit']))
@@ -55,7 +59,8 @@ if(isset($_POST['bnsubmit']))
 }
 
 
- echo'
+?>
+
 	<nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -84,26 +89,24 @@ if(isset($_POST['bnsubmit']))
             <li><a href="#">One more separated link</a></li>
           </ul>
         </li> -->
-
       </ul>
-      <form class="navbar-form navbar-left" role="search">
+      <form method="post" enctype="multipart/form-data" class="navbar-form navbar-left" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search">
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
-      <form class="navbar-form navbar-right" role="search">
-        <button type="submit" class="btn btn-default">Logout</button>
+      <form method="post" class="navbar-form navbar-right" role="search">
+        <button type="Submit" class="btn btn-info" name="btn_logout" >Logout</button>
       </form>
       <ul class="nav navbar-nav navbar-right">
         <li><a class="navbar-brand" href="#">
-        <img class ="round_img dropdown-toggle" src="pp1.jpg" width="30" height="30" alt="">
+        <?php echo '<img class="round_img" height="40" width="40" src="data:image;base64,'.$row[5].'" style="margin-top: -9px">';
+        ?>
         </a></li>
       </ul>
     </div>
   </div>
-</nav>'
-
-?>
+</nav>
 </body>
 </html>

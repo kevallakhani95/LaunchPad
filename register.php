@@ -115,9 +115,9 @@ if(isset($_POST['btn_sign_up']))
 
 			<input type="text" class="form-control" name="username" placeholder="Username" required="" autofocus="" />
 			<input type="text" class="form-control" name="fname" placeholder="First Name" required="" />
-			<input type="text" class="form-control" name="lname" placeholder="Last Name" required=""/>
-			<input type="text" class="form-control" name="email" placeholder="Email" required=""/>
-			<input type="password" class="form-control" name="password" placeholder="Password" />     		  
+			<input type="text" class="form-control" name="lname" placeholder="Last Name" required="" />
+			<input type="email" class="form-control" name="email" placeholder="Email" required="" />
+			<input type="password" class="form-control" name="password" placeholder="Password" required="" />     		  
 			<br>
 			<input class="input-group" type="file" name="propic" accept="image/*" />
 			<br>

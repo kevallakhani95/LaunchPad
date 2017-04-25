@@ -24,12 +24,6 @@ require 'db_conn.php';
 require 'navbar.php';								
 $user_name = $_SESSION['user_session'];
 
-$sqlquery=$conn->query("select * from users where uname='$user_name'");   
-$row = $sqlquery->fetch_array();
-echo '<img height="200" width="200" src="data:image;base64,'.$row[5].'" >';
-
-echo 'hello '.$user_name;
-
 
 ?>
 </body>
