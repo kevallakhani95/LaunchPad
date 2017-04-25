@@ -6,16 +6,16 @@ error_reporting(0);
 
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-	<title>LaunchPad</title>
 
-	<!-- Bootstrap -->
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>LaunchPad</title>
+
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 	<style>
 	.wrapper {    
@@ -87,6 +87,19 @@ if(isset($_POST['btn_sign_up']))
 	$lname = $_POST['lname'];
 	$email = $_POST['email'];
 
+	if(getimagesize($_FILES['propic']['tmp_name']) == FALSE)
+	{
+		echo "Please select an image.";							// Error message
+	}
+
+	$imageFile = $_FILES['propic']['name'];
+	$imgExt = strtolower(pathinfo($imageFile,PATHINFO_EXTENSION));
+	$image = addslashes($_FILES['propic']['tmp_name']);
+	$image = file_get_contents($image);
+	$image = base64_encode($image);
+
+	echo $imgExt;
+
 	$uname = $conn->real_escape_string($uname);
 	$password = $conn->real_escape_string($password);
 
@@ -96,7 +109,7 @@ if(isset($_POST['btn_sign_up']))
 
 	if($count==0)                   
 	{
-		$qry = "insert into users (uname, fname, lname, password, email) values ('$uname', '$fname', '$lname', '$password', '$email')";
+		$qry = "insert into users values ('$uname', '$fname', '$lname', '$password', '$email', '$image')";
 		$result = $conn->query($qry);
 		$_SESSION['user_session'] = $uname;
 		header("Location: home.php");
@@ -110,7 +123,7 @@ if(isset($_POST['btn_sign_up']))
 ?>
 <div class = "container">
 	<div class="wrapper">
-		<form method="post" name="Login_Form" class="form-signin" >       
+		<form method="post" enctype="multipart/form-data" name="Login_Form" class="form-signin" >       
 			<h3 class="form-signin-heading">Please register to access LaunchPad.</h3>
 			<hr class="colorgraph"><br>
 
@@ -120,7 +133,7 @@ if(isset($_POST['btn_sign_up']))
 			<input type="text" class="form-control" name="email" placeholder="Email" required=""/>
 			<input type="password" class="form-control" name="password" placeholder="Password" />     		  
 			<br>
-			<input class="button" type="file" name="pro_pic" accept="image/*" />
+			<input class="input-group" type="file" name="propic" accept="image/*" />
 			<br>
 			<br>
 			<button class="btn btn-lg btn-primary btn-block"  name="btn_sign_up" value="Login" type="Submit">Sign Up</button>  			
