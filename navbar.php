@@ -25,21 +25,6 @@ if(!isset($_SESSION['user_session']))
 
 $user_name = $_SESSION['userSession'];
 
-if(isset($_POST['btnlogout']))
-{
-  session_destroy();
-  $URL="index.php";
-  echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
-}
-
-if(isset($_POST['bnsubmit']))
-{
-    $URL="searchfeed.php";
-    echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
-    $searchtext = $_POST['searchtext'];
-    $_SESSION['search_word'] = $searchtext;
-}
-
 ?>
 
 	<nav class="navbar navbar-default">
