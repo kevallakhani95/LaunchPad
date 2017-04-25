@@ -76,7 +76,7 @@ if(isset($_POST['bnsubmit']))
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Recent Projects <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Upload Project</a></li>
+        <li><a href="upload.php">Upload Project</a></li>
         <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
