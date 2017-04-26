@@ -24,20 +24,31 @@ require 'db_conn.php';
 require 'navbar.php';								
 $user_name = $_SESSION['user_session'];
 
-$sqlquery=$conn->query("select * from users where uname='$user_name'");   
-$row = $sqlquery->fetch_array();
+$sqlquery="select * from projects order by datetime desc";   
+$result = $conn->query($sqlquery);
+
 // echo '<img height="200" width="200" src="data:image;base64,'.$row[5].'" >';
 
 // echo 'hello '.$user_name;
+while($row = mysqli_fetch_array($result))                     // Display all images
+{
+  $sqlquery1 = "select ptag from tags where pname ='".$row[0]."'";
+  $res = $conn->query($sqlquery1);
+  $sqlquery2 = "select count(*) from likes where project_name ='".$row[0]."'";
+  $res1 = $conn->query($sqlquery2);
+  $row1 = mysqli_fetch_array($res1);
 
+  $sqlquery3 = "select count(*) from pledges where pname ='".$row[0]."'";
+  $res2 = $conn->query($sqlquery3);
+  $row2 = mysqli_fetch_array($res2);
+echo'
 
-?>
 <div class="container">
 <div class="row">
   <div class="col-lg-12">
     <div class="row">
       <div class="col-lg-12">
-        <h4><strong><a href="#">Title of the post</a></strong></h4>
+        <h4><strong><a href="#">'.$row[0].'</a></strong></h4>
       </div>
     </div>
     <div class="row">
@@ -48,31 +59,33 @@ $row = $sqlquery->fetch_array();
       </div>
       <div class="col-lg-10">      
         <p>
-          Lorem ipsum dolor sit amet, id nec conceptam conclusionemque. Et eam tation option. Utinam salutatus ex eum. Ne mea dicit tibique facilisi, ea mei omittam explicari conclusionemque, ad nobis propriae quaerendum sea.
+          '.$row[2].'
         </p>
-        <p><a class="btn" href="#">Read more</a></p>
+        
       </div>
     </div>
     <div class="row">
       <div class="col-lg-12">
         <p></p>
         <p>
-          <i class="icon-user"></i> by <a href="#">John</a> 
-          | <i class="icon-calendar"></i> Sept 16th, 2012
-          | <i class="icon-comment"></i> <a href="#">3 Comments</a>
-          | <i class="icon-share"></i> <a href="#">39 Shares</a>
-          | <i class="icon-tags"></i> Tags : <a href="#"><span class="label label-info">Snipp</span></a> 
-          <a href="#"><span class="label label-info">Bootstrap</span></a> 
-          <a href="#"><span class="label label-info">UI</span></a> 
-          <a href="#"><span class="label label-info">growth</span></a>
+          <i class="icon-user"></i> by <a href="#">'.$row[1].'</a> 
+          | <i class="icon-calendar"></i> Posted on : '.$row[8].'<br>
+          <i class="icon-comment"></i> <a href="#">'.$row1[0].' Likes</a>
+          | <i class="icon-share"></i> <a href="#">'.$row2[0].' Plegdes</a>
+          | <i class="icon-tags"></i> Tags :'; while($tag = mysqli_fetch_array($res))
+                   { 
+                      echo '<span class="label label-info" style="margin-left: 1em"><a href="#" style="color: white">'.$tag[0].'</a></span>';    
+                   }
+echo'            
         </p>
       </div>
     </div>
   </div>
 </div>
 </div>
-<hr>
+<hr>';
+}
 
-
+?>
 </body>
 </html>

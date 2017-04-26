@@ -1,7 +1,7 @@
 <html>
 <head>
 
-	<meta charset="utf-8">
+  <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -39,11 +39,15 @@ if(!isset($_SESSION['user_session']))
 
 $user_name = $_SESSION['user_session'];
 
-if(isset($_POST['btnlogout']))
+$sqlquery=$conn->query("select * from users where uname='$user_name'");   
+$row = $sqlquery->fetch_array();
+
+if(isset($_POST['btn_logout']))
 {
   session_destroy();
-  $URL="index.php";
-  echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
+  // $URL="index.php";
+  // echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
+  header("Location: index.php");
 }
 
 if(isset($_POST['bnsubmit']))
@@ -55,8 +59,9 @@ if(isset($_POST['bnsubmit']))
 }
 
 
- echo'
-	<nav class="navbar navbar-default">
+?>
+
+  <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
@@ -70,8 +75,9 @@ if(isset($_POST['bnsubmit']))
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Recent Projects <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Upload Project</a></li>
+        <li class="active"><a href="#">Recent Activity <span class="sr-only">(current)</span></a></li>
+        <li><a href="upload.php">Launch Campaign</a></li>
+        <li><a href="browseprojects.php">Browse Project</a></li>
         <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
@@ -84,26 +90,33 @@ if(isset($_POST['bnsubmit']))
             <li><a href="#">One more separated link</a></li>
           </ul>
         </li> -->
-
       </ul>
-      <form class="navbar-form navbar-left" role="search">
+      <form method="post" enctype="multipart/form-data" class="navbar-form navbar-left" role="search">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+          <input type="text" class="form-control" placeholder="Search users, projects">
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
-      <form class="navbar-form navbar-right" role="search">
-        <button type="submit" class="btn btn-default">Logout</button>
+      <form method="post" class="navbar-form navbar-right" role="search">
+        <button type="Submit" class="btn btn-info" name="btn_logout" >Logout</button>
       </form>
       <ul class="nav navbar-nav navbar-right">
-        <li><a class="navbar-brand" href="#">
-        <img class ="round_img dropdown-toggle" src="pp1.jpg" width="30" height="30" alt="">
+        <li class="active"><a class="navbar-brand" href="user_profile.php">
+        <?php
+        if(!empty($row[5]))
+        {
+          echo '<img class="round_img" height="40" width="40" src="data:image;base64,'.$row[5].'" style="margin-top: -9px" alt="">';
+        }
+        else
+        {
+          echo '<img class="round_img" height="40" width="40" src="default-user-image.png" style="margin-top: -9px" alt="">'; 
+        }
+        ?>
+
         </a></li>
       </ul>
     </div>
   </div>
-</nav>'
-
-?>
+</nav>
 </body>
 </html>
