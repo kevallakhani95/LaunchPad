@@ -20,7 +20,8 @@
     .round_img {
     border-radius: 50%;
     max-width: 150px;
-    border: 2px solid #00bfff;
+    border: 0px solid #ccc;
+
     }
     </style>
 </head>
@@ -29,14 +30,18 @@
 <?php
 session_start();
 require "db_conn.php";
+
 if(!isset($_SESSION['user_session']))
 {
   echo "<script type='text/javascript'>alert('You are not logged in! Please log in.');
                     window.location = 'index.php';</script>";
 }
+
 $user_name = $_SESSION['user_session'];
+
 $sqlquery=$conn->query("select * from users where uname='$user_name'");   
 $row = $sqlquery->fetch_array();
+
 if(isset($_POST['btn_logout']))
 {
   session_destroy();
@@ -44,6 +49,7 @@ if(isset($_POST['btn_logout']))
   // echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
   header("Location: index.php");
 }
+
 if(isset($_POST['bnsubmit']))
 {
     $URL="searchfeed.php";
@@ -51,6 +57,8 @@ if(isset($_POST['bnsubmit']))
     $searchtext = $_POST['searchtext'];
     $_SESSION['search_word'] = $searchtext;
 }
+
+
 ?>
 
   <nav class="navbar navbar-default">
@@ -69,6 +77,7 @@ if(isset($_POST['bnsubmit']))
       <ul class="nav navbar-nav">
         <li class="active"><a href="#">Recent Activity <span class="sr-only">(current)</span></a></li>
         <li><a href="upload.php">Launch Campaign</a></li>
+        <li><a href="browseprojects.php">Browse Project</a></li>
         <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
@@ -92,7 +101,7 @@ if(isset($_POST['bnsubmit']))
         <button type="Submit" class="btn btn-info" name="btn_logout" >Logout</button>
       </form>
       <ul class="nav navbar-nav navbar-right">
-        <li><a class="navbar-brand" href="user_profile.php">
+        <li class="active"><a class="navbar-brand" href="user_profile.php">
         <?php
         if(!empty($row[5]))
         {

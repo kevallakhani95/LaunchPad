@@ -48,7 +48,7 @@ echo'
   <div class="col-lg-12">
     <div class="row">
       <div class="col-lg-12">
-        <h4><strong><a href="#">'.$row[0].'</a></strong></h4>
+        <h4><strong><a href="projectpage.php?id='.$row[0].'">'.$row[0].'</a></strong></h4>
       </div>
     </div>
     <div class="row">
