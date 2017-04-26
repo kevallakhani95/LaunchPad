@@ -20,7 +20,7 @@
     .round_img {
     border-radius: 50%;
     max-width: 150px;
-    border: 0px solid #ccc;
+    border: 2px solid #00bfff;
 
     }
     </style>
