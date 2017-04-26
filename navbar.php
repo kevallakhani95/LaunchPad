@@ -75,8 +75,8 @@ if(isset($_POST['bnsubmit']))
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Recent Projects <span class="sr-only">(current)</span></a></li>
-        <li><a href="upload.php">Upload Project</a></li>
+        <li class="active"><a href="#">Recent Activity <span class="sr-only">(current)</span></a></li>
+        <li><a href="upload.php">Launch Campaign</a></li>
         <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
@@ -92,7 +92,7 @@ if(isset($_POST['bnsubmit']))
       </ul>
       <form method="post" enctype="multipart/form-data" class="navbar-form navbar-left" role="search">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+          <input type="text" class="form-control" placeholder="Search users, projects">
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
