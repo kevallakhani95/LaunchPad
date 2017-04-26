@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>LauchPad</title>
+    <title>LaunchPad</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.css" rel="stylesheet">    
@@ -45,11 +45,20 @@
       $pmaxamt = $_POST['maxamt'];
       $penddate = $_POST['penddate'];
       $pcompdate = $_POST['pcompdate'];
+      
+      if(getimagesize($_FILES['covpic']['tmp_name']) == FALSE)
+      {
+        echo "Please select an image.";
+      }
+      
+      $imageFile = $_FILES['covpic']['name'];
+      $imgExt = strtolower(pathinfo($imageFile,PATHINFO_EXTENSION));
+      $image = addslashes($_FILES['covpic']['tmp_name']);
+      $image = file_get_contents($image);
+      $image = base64_encode($image);
 
-      // echo $pname."".$pdesc."".$pminamt."".$pmaxamt."".$penddate."".$pcompdate;
-
-        $sqlquery = "insert into projects values('$pname', '$usrName', '$pdesc', '$pminamt', '$pmaxamt', '$penddate', '$pcompdate', 'Funding', now())";
-        $result = $conn->query($sqlquery);
+      $sqlquery = "insert into projects values('$pname', '$usrName', '$pdesc', '$pminamt', '$pmaxamt', '$penddate', '$pcompdate', 'Funding', now(), '$image')";
+      $result = $conn->query($sqlquery);
 
        echo '<div class="alert alert-dismissible alert-success" style = "margin-top:-22px">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -60,58 +69,65 @@
 ?>
 
 
-  <form method="post" class="form-horizontal">
+  <form method="post" enctype="multipart/form-data" class="form-horizontal">
   <fieldset>
     <div class="form-group">
-      <label for="projectName" class="col-lg-2 control-label">*Project Name:</label>
+      <label for="projectName" class="col-lg-2 control-label">Campaign Name:</label>
       <div class="col-lg-8">
-        <input type="text" class="form-control" name="projname" placeholder="Project Name" required>
+        <input type="text" class="form-control" name="projname" placeholder="Campaign Name" required="">
       </div>
     </div>
     
     <div class="form-group">
-      <label for="textArea" class="col-lg-2 control-label">Project Description:</label>
+      <label for="textArea" class="col-lg-2 control-label">Campaign Description:</label>
       <div class="col-lg-8">
         <textarea class="form-control" rows="3" name="projdesc"></textarea>
-        <span class="help-block">A short description about the project</span>
+        <span class="help-block">A short description about the campaign</span>
       </div>
     </div>
 
     <div class="form-group">
       <label for="contact" class="col-lg-2 control-label">*Minimum Amount:</label>
       <div class="col-lg-4">
-        <input type="number" class="form-control" name="minamt" placeholder="Minium Funding Required" required>
+        <input type="number" class="form-control" name="minamt" placeholder="Minium Funding Required" required="">
       </div>
     </div>
 
     <div class="form-group">
       <label for="contact" class="col-lg-2 control-label">*Maximum Amount:</label>
       <div class="col-lg-4">
-        <input type="number" class="form-control" name="maxamt" placeholder="Maximum Funding Limit" required>
+        <input type="number" class="form-control" name="maxamt" placeholder="Maximum Funding Limit" required="">
       </div>
     </div>
 
     <div class="form-group">
-      <label for="contact" class="col-lg-2 control-label">Project Funding EndDate:</label>
+      <label for="contact" class="col-lg-2 control-label">Campaign Last Date:</label>
       <div class="col-lg-4">
-        <input type="date" class="form-control" name="penddate" required>
+        <input type="date" class="form-control" name="penddate" required="">
       </div>
     </div>
 
      <div class="form-group">
-      <label for="contact" class="col-lg-2 control-label">Project Completion Date:</label>
+      <label for="contact" class="col-lg-2 control-label">Campaign Completion Date:</label>
       <div class="col-lg-4">
-        <input type="date" class="form-control" name="pcompdate" required>
+        <input type="date" class="form-control" name="pcompdate" required="">
       </div>
     </div>
 
-  
     <div class="form-group">
-      <div class="col-lg-8 col-lg-offset-2">
-        <button type="submit" class="btn btn-primary" name="btncancel" formnovalidate>Cancel</button>
-        <button type="submit" class="btn btn-primary" name="btnsubmit">Submit</button>
+      <label for="contact" class="col-lg-2 control-label">Campaign Cover Image:</label>
+      <div class="col-lg-4">
+        <input class="input-group" type="file" name="covpic" accept="image/*" style="margin-top: 12px"/>
       </div>
     </div>
+    <br>
+    <div class="form-group">
+      <div class="col-lg-8 col-lg-offset-2">
+        <button type="submit" class="btn btn-primary" name="btncancel" style="margin-right: 15px;" formnovalidate>Cancel</button>
+        <button type="submit" class="btn btn-info" name="btnsubmit">Submit</button>
+      </div>
+    </div>
+
   </fieldset>
   </form>
 
