@@ -34,6 +34,7 @@ while($row = mysqli_fetch_array($result))                     // Display all ima
 {
   $sqlquery1 = "select ptag from tags where pname ='".$row[0]."'";
   $res = $conn->query($sqlquery1);
+
   $sqlquery2 = "select count(*) from likes where project_name ='".$row[0]."'";
   $res1 = $conn->query($sqlquery2);
   $row1 = mysqli_fetch_array($res1);
@@ -41,49 +42,48 @@ while($row = mysqli_fetch_array($result))                     // Display all ima
   $sqlquery3 = "select count(*) from pledges where pname ='".$row[0]."'";
   $res2 = $conn->query($sqlquery3);
   $row2 = mysqli_fetch_array($res2);
-echo'
 
-<div class="container">
-<div class="row">
-  <div class="col-lg-12">
-    <div class="row">
-      <div class="col-lg-12">
-        <h4><strong><a href="projectpage.php?id='.$row[0].'">'.$row[0].'</a></strong></h4>
+  echo'<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-lg-12">
+          <h4><strong><a href="projectpage.php?id='.$row[0].'">'.$row[0].'</a></strong></h4>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-2">
-        <a href="#" class="thumbnail">
-            <img src="http://placehold.it/260x180" alt="">
-        </a>
+      <div class="row">
+        <div class="col-lg-2">
+          <a href="#" class="thumbnail">
+              <img src="http://placehold.it/260x180" alt="">
+          </a>
+        </div>
+        <div class="col-lg-10">      
+          <p>
+            '.$row[2].'
+          </p>
+          
+        </div>
       </div>
-      <div class="col-lg-10">      
-        <p>
-          '.$row[2].'
-        </p>
-        
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <p></p>
-        <p>
-          <i class="icon-user"></i> by <a href="#">'.$row[1].'</a> 
-          | <i class="icon-calendar"></i> Posted on : '.$row[8].'<br>
-          <i class="icon-comment"></i> <a href="#">'.$row1[0].' Likes</a>
-          | <i class="icon-share"></i> <a href="#">'.$row2[0].' Plegdes</a>
-          | <i class="icon-tags"></i> Tags :'; while($tag = mysqli_fetch_array($res))
+      <div class="row">
+        <div class="col-lg-12">
+          <p></p>
+          <p>
+            <i class="icon-user"></i> by <a href="#">'.$row[1].'</a> 
+            | <i class="icon-calendar"></i> Posted on : '.$row[8].'<br>
+            <i class="icon-comment"></i> <a href="#">'.$row1[0].' Likes</a>
+            | <i class="icon-share"></i> <a href="#">'.$row2[0].' Plegdes</a>
+            | <i class="icon-tags"></i> Tags :'; 
+                   while($tag = mysqli_fetch_array($res))
                    { 
                       echo '<span class="label label-info" style="margin-left: 1em"><a href="#" style="color: white">'.$tag[0].'</a></span>';    
                    }
-echo'            
-        </p>
+  echo'</p>
+        </div>
       </div>
     </div>
   </div>
-</div>
-</div>
-<hr>';
+  </div>
+  <hr>';
 }
 
 ?>

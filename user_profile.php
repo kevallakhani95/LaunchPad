@@ -28,8 +28,8 @@ $user_name = $_SESSION['user_session'];
 $sqlquery = $conn->query("select * from users where uname='$user_name'");   
 $row = $sqlquery->fetch_array();
 
-$sqlquery = $conn->query("select * from projects where uname = '$user_name' order by datetime desc");
-$count_campaigns = $sqlquery->num_rows;
+$sqlquery_projects = $conn->query("select * from projects where uname = '$user_name' order by datetime desc");
+$count_campaigns = $sqlquery_projects->num_rows;
 
 $sqlquery = $conn->query("select * from follows where uname2 = '$user_name'");
 $count_followers = $sqlquery->num_rows;
@@ -39,6 +39,8 @@ $count_following = $sqlquery->num_rows;
 
 $sqlquery = $conn->query("select * from pledges where uname = '$user_name'");
 $count_pledges = $sqlquery->num_rows;
+
+
 
 echo '<br>
 	<div class="container target">
@@ -85,17 +87,33 @@ echo '<br>
 	            <div class="panel panel-default target">
 	                <div class="panel-heading" contenteditable="false">All Campaigns</div>
 	                	<div class="panel-body">
-	                  		<div class="row">
-	                			<div class="col-md-4">
-	                    			<div class="thumbnail">
-	                        			<img alt="300x200" src="http://lorempixel.com/600/200/people">
-	                        			<div class="caption">
-		                            		<h3>Rover</h3>
-		                            		<p>Cocker Spaniel who loves treats.</p>
+	                  		<div class="row">';
+
+	                  		while($row_camp = mysqli_fetch_array($sqlquery_projects))
+	                  		{
+	                  			echo '<div class="col-md-4">
+	                    			<div class="thumbnail">';
+	                    			
+	                    			if(!empty($row_camp[9]))
+					      			{
+					      				echo '<img alt="300x200" src="data:image;base64,'.$row_camp[9].'">';
+					      			}
+					      			else
+					      			{
+					      				echo '<img alt="300x200" src="default-cover-image.jpg">';	
+					      			}
+	                        		
+	                        		echo '<div class="caption">
+		                            		<h3>'.$row_camp[0].'</h3>
+		                            		<p>'.$row_camp[2].'</p>
 	                        			</div>
 	                    			</div>
-	                			</div>
-	            			</div>
+	                			</div>';
+	                  		}
+	                			
+	                			
+
+	            			echo '</div>
 	            		</div>
 	                </div>
 	    		</div>
