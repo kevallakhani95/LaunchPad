@@ -49,12 +49,13 @@ echo '<br>
              	<h1 style="font-family: Poiret One; font-size: 60px;">'.$row[1].' '.$row[2].'</h1>
              	<h4 class="text-muted" style="font-family: Poiret One; font-size: 30px;">@'.$row[0].'</h4>
              	<br>
-     			<button type="button" class="btn btn-success">Edit Profile</button>  
+     			<a href="edit_profile.php"><button type="button" class="btn btn-success">Edit Profile</button></a> 
+     			<a href="add_creditcard.php"><button type="button" class="btn btn-info">Add a credit card</button></a>  
     			<br>
     			<br>
         	</div>
       		<div class="col-sm-2">
-      		<a href="/users" class="pull-right">';
+      		<a href="#" class="pull-right">';
       			if(!empty($row[5]))
       			{
       				echo '<img title="profile image" class="img-circle img-responsive" src="data:image;base64,'.$row[5].'" alt="" style="width: 180px; height: 150px; border-radius: 50%; border: 2px solid #00bfff;">';
@@ -110,8 +111,6 @@ echo '<br>
 	                    			</div>
 	                			</div>';
 	                  		}
-	                			
-	                			
 
 	            			echo '</div>
 	            		</div>
