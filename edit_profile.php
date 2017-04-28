@@ -129,7 +129,7 @@ if(isset($_POST['btn_save']))
           	</div>
           
           	<div class="form-group">
-            <label class="col-md-3 control-label">Old Password:</label>
+            <label class="col-md-3 control-label">Password:</label>
             	<div class="col-md-8">
               	<input class="form-control" type="password" required="" name="password">
             	</div>
@@ -148,7 +148,6 @@ if(isset($_POST['btn_save']))
   </div>
   </form>
 </div>
-<hr>
 
 </body>
 </html>
