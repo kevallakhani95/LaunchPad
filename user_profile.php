@@ -75,12 +75,9 @@ echo '<br>
 	                <li class="list-group-item text-muted"><bold>Activity</bold> <i class="fa fa-dashboard fa-1x"></i></li>
 	                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Campaigns</strong></span>
 	                '.$count_campaigns.'</li>
-	                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Followers</strong></span>
-	                '.$count_followers.'</li>
-	                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Following</strong></span>
-	                '.$count_following.'</li>
-	                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Pledges</strong></span>
-	                '.$count_pledges.'</li>
+	                <li class="list-group-item text-right"><span class="pull-left"><strong class=""><a href="user_followers.php" style="color: black;">Followers</a></strong></span>'.$count_followers.'</li>
+	                <li class="list-group-item text-right"><span class="pull-left"><strong class=""><a href="user_following.php" style="color: black;">Following</a></strong></span>'.$count_following.'</li>
+	                <li class="list-group-item text-right"><span class="pull-left"><strong class=""><a href="user_pledges.php" style="color: black;">Pledges</a></strong></span>'.$count_pledges.'</li>
 	            </ul>
 	        </div>
 	        
