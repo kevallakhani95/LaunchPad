@@ -25,6 +25,10 @@ ini_set('default_socket_timeout', 300);
     border: 0px solid #ccc;
 
     }
+
+    .custom{
+  color:red;
+}
     </style>
 </head>
 <body>
@@ -45,6 +49,28 @@ $row = mysqli_fetch_array($result);
 $sqlquery1 = "select * from comments where pname = '".$pname."' order by commtime desc";
 $result1 = $conn->query($sqlquery1);
 
+$sqlquery4 = "select count(*), sum(pamt) from pledges where pname = '".$pname."'";
+$result4 = $conn->query($sqlquery4);
+$row4 = mysqli_fetch_array($result4);
+
+$sqlquery5 = "select * from likes where user_name='$user_name' and project_name='$pname'";
+$result5 = $conn->query($sqlquery5);
+$row5 = mysqli_fetch_array($result5);
+
+$sqlquery7 = "select ccno from creditcard where uname='$user_name'";
+$result7 = $conn->query($sqlquery7);
+
+if(!$row5[0])
+{
+    $a = 'Like';
+    $c = 'glyphicon glyphicon-thumbs-up';
+}
+else
+{
+    $a = 'Liked';
+    $c = 'glyphicon glyphicon-ok';
+}
+
 
 echo '
 
@@ -61,14 +87,22 @@ echo '
                 <h1>'.$row[0].'</h1>
 
                 <!-- Author -->
-                <p class="lead">
-                    by <a href="#">'.$row[1].'</a>
-                </p>
+                <form class="lead" method ="post">
+                    by <a href="#">'.$row[1].'</a><br>
+                    Project Status : '.$row[7].'
+                    <button class="btn btn-info btn pull-right" name = "like" onclick="likes()">
+                      <span class="'.$c.'" id ="sp1"></span> '.$a.'</button>
+
+                </form>
+
 
                 <hr>
 
                 <!-- Date/Time -->
-                <p><span class="glyphicon glyphicon-time"></span> Posted on '.$row[8].'</p>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on '.$row[8].'
+
+                </p>
+
 
                 <hr>
 
@@ -142,45 +176,31 @@ echo '
             <!-- Blog Sidebar Widgets Column -->
             <div class="col-md-4">
 
-                <!-- Blog Search Well -->
-                <div class="well">
-                    <h4>Blog Search</h4>
-                    <div class="input-group">
-                        <input type="text" class="form-control">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
-                                <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                        </span>
-                    </div>
-                    <!-- /.input-group -->
-                </div>
-
                 <!-- Blog Categories Well -->
                 <div class="well">
-                    <h4>Blog Categories</h4>
+                    <h4>Pledge Status:</h4>
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-8">
                             <ul class="list-unstyled">
-                                <li><a href="#">Category Name</a>
+                                <li>Minimum Funding Required:
                                 </li>
-                                <li><a href="#">Category Name</a>
+                                <li>Maximum Funding Required:
                                 </li>
-                                <li><a href="#">Category Name</a>
+                                <li>Amount Pledged:
                                 </li>
-                                <li><a href="#">Category Name</a>
+                                <li>Number of Pledges Done:
                                 </li>
                             </ul>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                             <ul class="list-unstyled">
-                                <li><a href="#">Category Name</a>
+                                <li>$'.$row[3].'
                                 </li>
-                                <li><a href="#">Category Name</a>
+                                <li> $'.$row[4].'
                                 </li>
-                                <li><a href="#">Category Name</a>
+                                <li> $'.$row4[1].'
                                 </li>
-                                <li><a href="#">Category Name</a>
+                                <li> '.$row4[0].'
                                 </li>
                             </ul>
                         </div>
@@ -190,8 +210,27 @@ echo '
 
                 <!-- Side Widget Well -->
                 <div class="well">
-                    <h4>Side Widget Well</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
+                    <form method="post">
+                      <label class="control-label" for="focusedInput">Enter Pledge Amount in $ </label><br>
+                      <input class="form-control" id="pledgeamt" type="number" value="Pledge Amount"><br>
+                      <label for="select" class="control-label">Select Credit Card</label><br>
+                          <div>
+                            <select class="form-control" id="select">';
+                            while($row7 = mysqli_fetch_array($result7))
+                            {  echo' 
+                              <option>'.$row7[0].'</option>';
+                              }
+                              echo'
+                            </select>
+                          </div>
+                          <h4 class ="text-center">OR</h4>
+                      <input type="button" class="btn btn-primary center-block" value="Add CreditCard" onClick="redir()"><br>
+
+                      <input type="button"  class="btn btn-primary center-block" value="Pledge" onClick="pledge()">
+
+                    </form>
+
+                    
                 </div>
 
             </div>
@@ -245,10 +284,49 @@ echo '
                       window.location = "projectpage.php?id="+projname;
                   }
 });
-
             
 
             
+        }
+
+        function likes(e)
+            {
+                e.preventDefault();
+                var projname = '<?php echo $pname;?>';
+                // alert('liked');
+                // document.getElementById('sp1').className = 'glyphicon glyphicon-ok';
+                // document.getElementById('sp1').innerHTML = 'Liked';
+                <?php
+                $sqlquery5 = "insert into likes values('$user_name','$pname')";
+                $conn->query($sqlquery5);
+                ?>
+                window.location = "projectpage.php?id="+projname;
+            }
+
+        function redir()
+        {
+            window.location = "add_creditcard.php";
+
+        }
+
+        function pledge()
+        {
+            
+            var projname = '<?php echo $pname;?>';
+            var pledge= document.getElementById("pledgeamt").value;
+            var ccno = document.getElementById("select").value;
+            var uname = '<?php echo $user_name;?>';
+
+             $.ajax({ url: 'addpledge.php',
+            data: {pledgeamt: pledge, ccno:ccno, projname:projname,uname:uname },
+            type: 'post',
+            success: function(out) {
+                      window.location = "projectpage.php?id="+projname;
+                  }
+            });
+
+               
+
         }
      </script>
 
