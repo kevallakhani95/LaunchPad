@@ -1,7 +1,7 @@
 <?php
 ini_set('mysql.connect_timeout', 300);
 ini_set('default_socket_timeout', 300);
-error_reporting(0);
+//error_reporting(0);
 ?>
 
 <html>
@@ -17,6 +17,7 @@ error_reporting(0);
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+     
       <style>
     .round_img {
     border-radius: 50%;
@@ -28,7 +29,9 @@ error_reporting(0);
 </head>
 <body>
 <?php
-session_start();										
+if (!isset($_SESSION)){
+  session_start();
+}										
 require 'db_conn.php';	
 require 'navbar.php';								
 $user_name = $_SESSION['user_session'];
@@ -41,13 +44,7 @@ $row = mysqli_fetch_array($result);
 // echo $row[0];
 $sqlquery1 = "select * from comments where pname = '".$pname."' order by commtime desc";
 $result1 = $conn->query($sqlquery1);
-if(isset($_POST['btnsubmit']))
-{
-	$comment = $_POST['comment'];
-	$sqlquery3 = "insert into comments values('$user_name','$comment','$pname',now())";
-	$conn->query($sqlquery3);
-	header('Location: ' . $_SERVER['PHP_SELF']);
-}
+
 
 echo '
 
@@ -94,9 +91,9 @@ echo '
                     <h4>Leave a Comment:</h4>
                     <form role="form" method="post">
                         <div class="form-group">
-                            <textarea class="form-control" name ="comment" rows="3" required=""></textarea>
+                            <textarea class="form-control" id ="comment" rows="3" required=""></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary" name = "btnsubmit">Submit</button>
+                        <input type="button" class="btn btn-primary" name="btnsubmit"value="Submit" onclick="addcomm()">
                     </form>
                 </div>
 
@@ -104,7 +101,9 @@ echo '
 
                 <!-- Posted Comments -->
 
-                <!-- Comment -->';
+                <!-- Comment -->
+            <div class="container" id ="comms1">';
+
                 while($row1 = mysqli_fetch_array($result1))
                {
                	$sqlquery2 = " select profile_pic from users where uname = '".$row1[0]."'";
@@ -137,6 +136,7 @@ echo '
                 </div>';
              }
              echo'
+        </div> 
             </div>
 
             <!-- Blog Sidebar Widgets Column -->
@@ -219,7 +219,39 @@ echo '
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>';
+    // if(isset($_POST['btnsubmit']))
+    // {
+    //     $comment = $_POST['comment'];
+    //     $sqlquery3 = "insert into comments values('$user_name','$comment','$pname',now())";
+    //     $conn->query($sqlquery3);
+       
+
+    // }
   ?>
+  <script>
+        function addcomm()
+         {
+            
+            var comm= document.getElementById("comment").value;
+            
+            var projname = '<?php echo $pname;?>';
+
+            var uname = '<?php echo $user_name;?>';
+            
+            $.ajax({ url: 'addcomm.php',
+            data: {comm: comm, projname:projname, uname:uname},
+            type: 'post',
+            success: function(out) {
+                      window.location = "projectpage.php?id="+projname;
+                  }
+});
+
+            
+
+            
+        }
+     </script>
+
 
 </body>
 
