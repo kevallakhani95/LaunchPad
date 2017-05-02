@@ -50,9 +50,9 @@ if(isset($_POST['btn_logout']))
   header("Location: index.php");
 }
 
-if(isset($_POST['bnsubmit']))
+if(isset($_POST['btn_submit']))
 {
-    $URL="searchfeed.php";
+    $URL="search_feed.php";
     echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
     $searchtext = $_POST['searchtext'];
     $_SESSION['search_word'] = $searchtext;
@@ -93,9 +93,9 @@ if(isset($_POST['bnsubmit']))
       </ul>
       <form method="post" enctype="multipart/form-data" class="navbar-form navbar-left" role="search">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search users, projects">
+          <input type="text" class="form-control" placeholder="Search users, campaigns" name="searchtext">
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-default" name="btn_submit">Submit</button>
       </form>
       <form method="post" class="navbar-form navbar-right" role="search">
         <button type="Submit" class="btn btn-info" name="btn_logout" >Logout</button>
