@@ -33,12 +33,15 @@ $query = $conn->query("select * from creditcard where uname='$user_name'");
 if(isset($_POST['btn_save']))
 {
 	$cc_new = $_POST['cc_new'];
+  $cvv_new = $_POST['cvv_new'];
+  $edm_new = $_POST['edm_new'];
+  $edy_new = $_POST['edy_new'];
 		
-  $qry = "insert into creditcard values('$user_name','$cc_new')";
+  $qry = "insert into creditcard values('$user_name','$cc_new', '$cvv_new', '$edm_new', '$edy_new')";
 	$result = $conn->query($qry);
 	
 	echo '<script>
-		window.location = "user_profile.php"
+		window.location = "add_creditcard.php"
 	</script>';
 	
 }
@@ -51,31 +54,62 @@ if(isset($_POST['btn_save']))
   		<form method="post" enctype="multipart/form-data" class="form-horizontal">
 		<div class="row">
       		<!-- edit form column -->
-      		<div class="col-md-9 personal-info">
+      		<div class="col-md-7 personal-info">
         
         	<h3>Payment Cards</h3>
         	<hr>
-          <?php
 
-          while($row_credit = mysqli_fetch_array($query))
-          {
-            echo '<label class="control-label" style="padding-left: 50px">'.$row_credit['ccno'].'</label><br>';
-          }
+          <table class="table table-striped table-hover ">
+            <thead>
+              <tr>
+                <th><u><h4>Card numbers</h4></u></th>
+                <th><u><h4>Expiry Date</h4></u></th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <?php
+                while($row_credit = mysqli_fetch_array($query))
+                {
+                  echo '<tr>
+                        <td><label class="control-label">'.$row_credit['ccno'].'</label></td>
+                        <td><label class="control-label">'.$row_credit['exp_date_month'].' 
+                        / '.$row_credit['exp_date_year'].'</label></td>
+                        </tr>';
+                }  
+              ?>
 
-          
-          ?>
+            </tbody>
+          </table>
+          <hr>
+          </div>
+          <div class="col-md-5 personal-info">
+          <h3>Add a new Payment Card</h3>
           <hr>
           	<div class="form-group">
-            <label class="col-lg-3 control-label">Card Number:</label>
             	<div class="col-lg-8">
-              	<input class="form-control" type="text" placeholder="Enter Credit card number" required="" name="cc_new" maxlength="16"> 
+              	<input class="form-control" type="text" placeholder="Card number" required="" name="cc_new" maxlength="16"> 
             	</div>
-          	</div>
+              <div class="col-lg-4">
+                <input class="form-control" type="password" placeholder="CVV" required="" name="cvv_new" maxlength="3"> 
+              </div>
 
+              <div class="col-lg-4" style="margin-top: 15px;">
+                <input class="form-control" type="numeric" placeholder="Expiry month" required="" name="edm_new" maxlength="2"> 
+              </div>
+              <div class="col-lg-1" style="margin-top: 15px;">
+                <label ><h4>-</h4></label>
+              </div>
+                
+              <div class="col-lg-4" style="margin-top: 15px;">
+                <input class="form-control" type="numeric" placeholder="Expiry year" required="" name="edy_new" maxlength="4"> 
+              </div>
+          	</div>
+            <hr>
           	<div class="form-group">
             <label class="col-md-3 control-label"></label>
             	<div class="col-md-8">
-              	<button type="Submit" class="btn btn-info" style="margin-right: 15px;" name="btn_save">Save Changes</button>
+              	<button type="Submit" class="btn btn-info" style="margin-right: 15px;" name="btn_save">Add Card</button>
               	<span></span>
               	<a href="user_profile.php"><button type="button" class="btn btn-default">Cancel</button></a>
             	</div>
