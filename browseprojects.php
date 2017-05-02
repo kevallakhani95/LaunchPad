@@ -7,7 +7,7 @@ error_reporting(0);
 <html>
 <head>
 
-	<meta charset="utf-8">
+  <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -19,30 +19,24 @@ error_reporting(0);
 </head>
 <body>
 <?php
-session_start();										
-require 'db_conn.php';	
-require 'navbar.php';								
+session_start();                    
+require 'db_conn.php';  
+require 'navbar.php';               
 $user_name = $_SESSION['user_session'];
-
 $sqlquery="select * from projects order by datetime desc";   
 $result = $conn->query($sqlquery);
-
 // echo '<img height="200" width="200" src="data:image;base64,'.$row[5].'" >';
-
 // echo 'hello '.$user_name;
 while($row = mysqli_fetch_array($result))                     // Display all images
 {
   $sqlquery1 = "select ptag from tags where pname ='".$row[0]."'";
   $res = $conn->query($sqlquery1);
-
   $sqlquery2 = "select count(*) from likes where project_name ='".$row[0]."'";
   $res1 = $conn->query($sqlquery2);
   $row1 = mysqli_fetch_array($res1);
-
   $sqlquery3 = "select count(*) from pledges where pname ='".$row[0]."'";
   $res2 = $conn->query($sqlquery3);
   $row2 = mysqli_fetch_array($res2);
-
   echo'<div class="container">
   <div class="row">
     <div class="col-lg-12">
@@ -85,7 +79,6 @@ while($row = mysqli_fetch_array($result))                     // Display all ima
   </div>
   <hr>';
 }
-
 ?>
 </body>
 </html>
