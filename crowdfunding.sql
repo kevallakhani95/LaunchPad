@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 03, 2017 at 04:45 AM
+-- Generation Time: May 03, 2017 at 10:30 AM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 7.1.1
 
@@ -73,7 +73,7 @@ CREATE TABLE `comments` (
   `uname` varchar(45) NOT NULL,
   `comment` longtext,
   `pname` varchar(45) NOT NULL,
-  `commtime` datetime DEFAULT NULL
+  `commtime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -82,6 +82,8 @@ CREATE TABLE `comments` (
 
 INSERT INTO `comments` (`uname`, `comment`, `pname`, `commtime`) VALUES
 ('klakhani', 'mkmKJkln kjkj jkn kjbn kjbkjb', 'p1', '2017-04-11 23:25:22'),
+('klakhani', 'pop', 'p4', '2017-05-03 02:11:23'),
+('klakhani', 'lkl', 'p4', '2017-05-03 02:35:01'),
 ('kmodi', 'bn gh gjtgjugjh  gh  jhghjghj ', 'p2', '2017-04-08 23:28:22');
 
 -- --------------------------------------------------------
@@ -133,6 +135,8 @@ INSERT INTO `follows` (`uname1`, `uname2`) VALUES
 ('BobInBrooklyn', 'rchauhan'),
 ('jshah', 'klakhani'),
 ('jshah', 'kmodi'),
+('klakhani', 'ashah'),
+('klakhani', 'BobInBrooklyn'),
 ('klakhani', 'kmodi'),
 ('klakhani', 'rchauhan'),
 ('rchauhan', 'jshah');
@@ -145,15 +149,19 @@ INSERT INTO `follows` (`uname1`, `uname2`) VALUES
 
 CREATE TABLE `likes` (
   `user_name` varchar(45) NOT NULL,
-  `project_name` varchar(45) NOT NULL
+  `project_name` varchar(45) NOT NULL,
+  `datetime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `likes`
 --
 
-INSERT INTO `likes` (`user_name`, `project_name`) VALUES
-('klakhani', 'p1');
+INSERT INTO `likes` (`user_name`, `project_name`, `datetime`) VALUES
+('klakhani', 'p1', '2017-05-03 03:54:09'),
+('klakhani', 'p4', '2017-05-03 03:51:42'),
+('klakhani', 'p5', '2017-05-03 04:02:49'),
+('klakhani', 'p6', '2017-05-03 03:51:21');
 
 -- --------------------------------------------------------
 
@@ -362,7 +370,7 @@ ALTER TABLE `charges`
 -- Indexes for table `comments`
 --
 ALTER TABLE `comments`
-  ADD PRIMARY KEY (`uname`,`pname`),
+  ADD PRIMARY KEY (`uname`,`pname`,`commtime`),
   ADD KEY `pname3_idx` (`pname`);
 
 --
