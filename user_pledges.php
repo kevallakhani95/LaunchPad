@@ -26,6 +26,7 @@ $user_name = $_SESSION['user_session'];
 $user = $_GET['id'];
 
 $query = $conn->query("select pname, pamt, date(ptime) as pdate, ccno from pledges where uname='$user'");
+$count_pledge = $query->num_rows;
 
 $sqlquery = $conn->query("select * from users where uname = '$user'");
 $row_user_details = mysqli_fetch_array($sqlquery);
@@ -40,19 +41,37 @@ $row_user_details = mysqli_fetch_array($sqlquery);
         <th><u>Campaign name</u></th>
         <th><u>Pledge Amount</u></th>
         <th><u>Pledge Date</u></th>
-        <th><u>Payment card</u></th>
+        <?php
+        
+        if($user_name == $user)
+        {
+          echo '<th><u>Payment card</u></th>';
+        }
+        
+        ?>
       </tr>
     </thead>
     <tbody>
       <?php
+
+        if($count_pledge == 0)
+         {
+          echo '<h4 class="text-muted" style="text-align: center; font-size: 30px;">This user does not have any pledges!</h4>';
+         }
+
         while($row_pledges = mysqli_fetch_array($query))
         {
           echo '<tr>
           <td>'.$row_pledges['pname'].'</td>
           <td>'.$row_pledges['pamt'].'</td>
-          <td>'.$row_pledges['pdate'].'</td>
-          <td>'.$row_pledges['ccno'].'</td>
-          </tr>';
+          <td>'.$row_pledges['pdate'].'</td>';
+
+          if($user_name == $user)
+          {
+            echo '<td>'.$row_pledges['ccno'].'</td>';
+          }
+
+          echo '</tr>';
         }
       ?>
     </tbody>

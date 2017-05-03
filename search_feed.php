@@ -77,6 +77,12 @@ $count_users = $sqlquery_users->num_rows;
      <div class="col-sm-12 col-sm-offset-0">
          
          <?php 
+
+         if($count_projects == 0)
+         {
+            echo '<h4 class="text-muted" style="text-align: center; font-size: 30px;">There are no campaigns that match the searched text!</h4>';
+         }
+
          while($row_proj = mysqli_fetch_array($sqlquery_proj))
          {
             $project = $row_proj['pname'];

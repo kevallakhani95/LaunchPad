@@ -46,6 +46,7 @@ $user_name = $_SESSION['user_session'];
 $user = $_GET['id'];
 
 $query = $conn->query("select * from follows where uname1 = '$user'");
+$count_follow = $query->num_rows;
 
 $sqlquery = $conn->query("select * from users where uname = '$user'");
 $row_user_details = mysqli_fetch_array($sqlquery);
@@ -60,6 +61,12 @@ $row_user_details = mysqli_fetch_array($sqlquery);
      <div class="col-sm-12 col-sm-offset-0">
          
          <?php 
+
+         if($count_follow == 0)
+         {
+          echo '<h4 class="text-muted" style="text-align: center; font-size: 30px;">This user does not follow anyone!</h4>';
+         }
+
          while($row_followers = mysqli_fetch_array($query))
          {
             $follower = $row_followers['uname2'];
