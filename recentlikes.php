@@ -24,37 +24,43 @@ require 'db_conn.php';
 require 'navbar.php';								
 $user_name = $_SESSION['user_session'];
 
-$sqlquery=$conn->query("select * from users where uname='$user_name'");   
-$row = $sqlquery->fetch_array();
+$sqlquery=$conn->query("select f.uname2, l.project_name, date(now())-date(l.datetime) from follows f,likes l where f.uname1 ='$user_name' and f.uname2 = l.user_name order by l.datetime desc ;");
 ?>
+
 <div class="container">
   <ul class="nav nav-pills">
-    <li class="active"><a href="home.php">Campaignns</a></li>
-    <li><a href="recentlikes.php">Likes</a></li>
+    <li ><a href="home.php">Campaigns</a></li>
+    <li class="active"><a href="recentlikes.php">Likes</a></li>
     <li><a href="recentcomments.php">Comments</a></li>
     <li><a href="recentupdates.php">Updates</a></li>
   </ul>
   <hr>
-  <div class="row">
-  <div class="col-md-12">
-    <div class="row">
-      <div class="col-md-12">
-        <h4><strong><a href="#">Title of the post</a></strong></h4>
+<?php
+while($row = mysqli_fetch_array($sqlquery))
+{  
+  if($row[2]==0)
+  {
+    $a = 'today';
+  }
+  else
+  {
+    $a = "$row[2] days ago";
+  }
+  echo'
+    <div class="container" style="margin-top:20px;">
+      <div class="row">
+        <div class="col-md-11"> 
+            <span class="pull-right text-muted small time-line">
+                '.$a.' <span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
+            </span> 
+            
+            <i class="glyphicon glyphicon-user icon-activity"></i> <a href="#">'.$row[0].'</a> liked <a href="#">'.$row[1].'</a>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-3">
-        <a href="#" class="thumbnail">
-            <img src="http://placehold.it/260x180" alt="">
-        </a>
-      </div>
-      <div class="col-md-9">      
-        <p>
-          Lorem ipsum dolor sit amet, id nec conceptam conclusionemque. Et eam tation option. Utinam salutatus ex eum. Ne mea dicit tibique facilisi, ea mei omittam explicari conclusionemque, ad nobis propriae quaerendum sea.
-        </p>
-        <p><a class="btn" href="#">Read more</a></p>
-      </div>
-    </div>
-
+    <hr>';
+  }
+?>
+ </div>
 </body>
 </html>

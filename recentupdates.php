@@ -29,10 +29,10 @@ $row = $sqlquery->fetch_array();
 ?>
 <div class="container">
   <ul class="nav nav-pills">
-    <li class="active"><a href="home.php">Campaignns</a></li>
+    <li><a href="home.php">Campaignns</a></li>
     <li><a href="recentlikes.php">Likes</a></li>
-    <li><a href="recentcomments.php">Comments</a></li>
-    <li><a href="recentupdates.php">Updates</a></li>
+    <li><a href="recentcommemts.php">Comments</a></li>
+    <li class="active"><a href="recentupdates.php">Updates</a></li>
   </ul>
   <hr>
   <div class="row">
@@ -55,6 +55,35 @@ $row = $sqlquery->fetch_array();
         <p><a class="btn" href="#">Read more</a></p>
       </div>
     </div>
+    <?php   
+while($row = mysqli_fetch_array($sqlquery))
+{
+  echo'
+
+  <div class="row">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-12">
+        <h5><a href="#">Kunal<a/> liked this Campaign<h5>
+        <h4><strong><a href="#">Title of the post</a></strong></h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <a href="#" class="thumbnail">
+            <img src="http://placehold.it/260x180" alt="">
+        </a>
+      </div>
+      <div class="col-md-9">      
+        <p>
+          Lorem ipsum dolor sit amet, id nec conceptam conclusionemque. Et eam tation option. Utinam salutatus ex eum. Ne mea dicit tibique facilisi, ea mei omittam explicari conclusionemque, ad nobis propriae quaerendum sea.
+        </p>
+        <p><a class="btn" href="#">Read more</a></p>
+      </div>
+    </div>';
+}
+?>
+
 
 </body>
 </html>
