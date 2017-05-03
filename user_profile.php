@@ -50,25 +50,40 @@ session_start();
 require 'db_conn.php';	
 require 'navbar.php';								
 $user_name = $_SESSION['user_session'];
+$user = $_GET['id'];
 
-$sqlquery = $conn->query("select * from users where uname='$user_name'");   
+$sqlquery = $conn->query("select * from users where uname='$user'");   
 $row = $sqlquery->fetch_array();
 
 $sqlquery_projects = $conn->query("select p.pname, p.uname, p.cover_page, p.pstatus, 
                                 case when DATEDIFF(date(penddate), date(now())) < 1 then 0 
                                     else DATEDIFF(date(penddate), date(now())) END as ddate 
                                 from projects as p 
-                            	where uname = '$user_name' order by datetime desc");
+                            	where uname = '$user' order by datetime desc");
 $count_campaigns = $sqlquery_projects->num_rows;
 
-$sqlquery = $conn->query("select * from follows where uname2 = '$user_name'");
+$sqlquery = $conn->query("select * from follows where uname2 = '$user'");
 $count_followers = $sqlquery->num_rows;
 
-$sqlquery = $conn->query("select * from follows where uname1 = '$user_name'");
+$sqlquery = $conn->query("select * from follows where uname1 = '$user'");
 $count_following = $sqlquery->num_rows;
 
-$sqlquery = $conn->query("select * from pledges where uname = '$user_name'");
+$sqlquery = $conn->query("select * from pledges where uname = '$user'");
 $count_pledges = $sqlquery->num_rows;
+
+$sqlquery_fol = $conn->query("select * from follows where uname1 = '$user_name' and uname2 = '$user'");
+$follows_flag = $sqlquery_fol->num_rows;
+
+if($follows_flag == 1)
+{
+	$a = 'Following';
+    $c = 'glyphicon glyphicon-check';
+}
+else
+{
+	$a = ' Follow';
+    $c = 'glyphicon glyphicon-unchecked';
+}
 
 ?>
 
@@ -79,12 +94,20 @@ $count_pledges = $sqlquery->num_rows;
              	<h1 style="font-family: Poiret One; font-size: 60px;"><?php echo $row['fname']." "; echo $row['lname']; ?></h1>
              	<h4 class="text-muted" style="font-family: Poiret One; font-size: 30px;">@<?php echo $row['uname']; ?></h4>
              	<br>
+     			<?php
+
+     			if($user == $user_name)
+     			{
+     				echo '<a href="edit_profile.php"><button type="button" class="btn btn-success" style="margin-right: 5px;">Edit Profile</button></a> 
      			
-     			<a href="edit_profile.php"><button type="button" class="btn btn-success" style="margin-right: 5px;">Edit Profile</button>
-     			</a> 
-     			
-     			<a href="add_creditcard.php"><button type="button" class="btn btn-info">View / Add a payment card</button></a>  
-    			
+     				<a href="add_creditcard.php"><button type="button" class="btn btn-info">View / Add a payment card</button></a>';
+     			}	  
+    			else
+    			{
+    				echo '<button class="btn btn-info" name = "follows" onclick="follows()">
+                	<span class="'.$c.'" id ="sp1"></span> '.$a.'</button>';
+    			}
+    			?>
     			<br>
     			<br>
         	</div>
@@ -115,9 +138,9 @@ $count_pledges = $sqlquery->num_rows;
 	                <li class="list-group-item text-muted"><bold>Activity</bold> <i class="fa fa-dashboard fa-1x"></i></li>
 	                <li class="list-group-item text-right"><span class="pull-left"><strong class="">Campaigns</strong></span>
 	                <?php echo $count_campaigns; ?></li>
-	                <li class="list-group-item text-right"><span class="pull-left"><strong class=""><a href="user_followers.php" style="color: black;">Followers</a></strong></span><?php echo $count_followers; ?></li>
-	                <li class="list-group-item text-right"><span class="pull-left"><strong class=""><a href="user_following.php" style="color: black;">Following</a></strong></span><?php echo $count_following; ?></li>
-	                <li class="list-group-item text-right"><span class="pull-left"><strong class=""><a href="user_pledges.php" style="color: black;">Pledges</a></strong></span><?php echo $count_pledges; ?></li>
+	                <li class="list-group-item text-right"><span class="pull-left"><strong><a href="user_followers.php?id=<?php echo $user; ?>" style="color: black;">Followers</a></strong></span><?php echo $count_followers; ?></li>
+	                <li class="list-group-item text-right"><span class="pull-left"><strong><a href="user_following.php?id=<?php echo $user; ?>" style="color: black;">Following</a></strong></span><?php echo $count_following; ?></li>
+	                <li class="list-group-item text-right"><span class="pull-left"><strong><a href="user_pledges.php?id=<?php echo $user; ?>" style="color: black;">Pledges</a></strong></span><?php echo $count_pledges; ?></li>
 	            </ul>
 	        </div>
 	        
@@ -251,6 +274,23 @@ $count_pledges = $sqlquery->num_rows;
 	</div>';
 ?>
 
+<script>
+
+ 	function follows()
+    {
+    	var uname = '<?php echo $user_name; ?>';
+        var other_uname = '<?php echo $user; ?>';
+        
+        $.ajax({ url: 'add_follower.php',
+        data: {uname: uname, other_uname: other_uname},
+        type: 'post',
+        success: function(out) {
+                  window.location = "user_profile.php?id="+other_uname;
+              }
+		});
+    }
+
+</script>
 
 </body>
 </html>

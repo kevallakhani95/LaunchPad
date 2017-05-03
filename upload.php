@@ -83,48 +83,48 @@
   }
 ?>
 
-
+<div class="container">
   <form method="post" enctype="multipart/form-data" class="form-horizontal">
   <fieldset>
     <div class="form-group">
       <label for="projectName" class="col-lg-2 control-label">Campaign Name:</label>
-      <div class="col-lg-8">
+      <div class="col-lg-5">
         <input type="text" class="form-control" name="projname" placeholder="Campaign Name" required="">
       </div>
     </div>
     
     <div class="form-group">
       <label for="textArea" class="col-lg-2 control-label">Campaign Description:</label>
-      <div class="col-lg-8">
+      <div class="col-lg-6">
         <textarea class="form-control" rows="3" name="projdesc"></textarea>
         <span class="help-block">A short description about the campaign</span>
       </div>
     </div>
 
     <div class="form-group">
-      <label for="contact" class="col-lg-2 control-label">*Minimum Amount:</label>
-      <div class="col-lg-4">
-        <input type="number" class="form-control" name="minamt" placeholder="Minium Funding Required" required="">
+      <label for="contact" class="col-lg-2 control-label">Min Funding Required :</label>
+      <div class="col-lg-2">
+        <input type="number" class="form-control" name="minamt" placeholder="$" required="">
       </div>
     </div>
 
     <div class="form-group">
-      <label for="contact" class="col-lg-2 control-label">*Maximum Amount:</label>
-      <div class="col-lg-4">
-        <input type="number" class="form-control" name="maxamt" placeholder="Maximum Funding Limit" required="">
+      <label for="contact" class="col-lg-2 control-label">Max Funding Limit :</label>
+      <div class="col-lg-2">
+        <input type="number" class="form-control" name="maxamt" placeholder="$" required="">
       </div>
     </div>
 
     <div class="form-group">
       <label for="contact" class="col-lg-2 control-label">Campaign Last Date:</label>
-      <div class="col-lg-4">
+      <div class="col-lg-3">
         <input type="date" class="form-control" name="penddate" required="">
       </div>
     </div>
 
      <div class="form-group">
-      <label for="contact" class="col-lg-2 control-label">Campaign Completion Date:</label>
-      <div class="col-lg-4">
+      <label for="contact" class="col-lg-2 control-label">Completion Date:</label>
+      <div class="col-lg-3">
         <input type="date" class="form-control" name="pcompdate" required="">
       </div>
     </div>
@@ -137,15 +137,15 @@
     </div>
 
     <div class="form-group">
-      <label for="tags" class="col-lg-2 control-label">Add Tags:</label>
-      <div class="col-lg-8">
-        <input type="text" class="form-control" name="tags" placeholder="Seperate tags by comma(,)" required="">
+      <label for="tags" class="col-lg-2 control-label">Tags:</label>
+      <div class="col-lg-6">
+        <input type="text" class="form-control" name="tags" placeholder="Separate tags by comma (,)" required="">
       </div>
     </div>
 
     <div class="form-group">
       <label for="location" class="col-lg-2 control-label">Location:</label>
-      <div class="col-lg-8">
+      <div class="col-lg-3">
         <input type="text" class="form-control" name="location" placeholder="Location" required="">
       </div>
     </div>
@@ -161,6 +161,6 @@
 
   </fieldset>
   </form>
-  
+</div>
   </body>
 </html>

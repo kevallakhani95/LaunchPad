@@ -1,7 +1,7 @@
 <?php
 ini_set('mysql.connect_timeout', 300);
 ini_set('default_socket_timeout', 300);
-//error_reporting(0);
+error_reporting(0);
 ?>
 
 <html>
@@ -15,37 +15,39 @@ ini_set('default_socket_timeout', 300);
 
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
-     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
      
-      <style>
+    <style>
+    
     .round_img {
     border-radius: 50%;
     max-width: 150px;
     border: 0px solid #ccc;
-
     }
 
     .custom{
-  color:red;
-}
+    color:red;
+    }
+    
     </style>
+
 </head>
+
 <body>
 <?php
-if (!isset($_SESSION)){
-  session_start();
-}										
+session_start();										
 require 'db_conn.php';	
 require 'navbar.php';								
 $user_name = $_SESSION['user_session'];
 
 $pname = $_GET['id'];
-// echo $pname;
-$sqlquery = " select * from projects where pname = '".$pname."'";
+
+$sqlquery = " select pname, uname, pdesc, pminamt, pmaxamt, date(penddate) as penddate, date(pcompdate) as pcompdate, pstatus, date(datetime) as datetime, 
+                cover_page, location from projects where pname = '".$pname."'";
 $result = $conn->query($sqlquery);
 $row = mysqli_fetch_array($result);
-// echo $row[0];
+
 $sqlquery1 = "select * from comments where pname = '".$pname."' order by commtime desc";
 $result1 = $conn->query($sqlquery1);
 
@@ -85,42 +87,39 @@ echo '
 
                 <!-- Title -->
                 <h1>'.$row[0].'</h1>
-
+                <br>
                 <!-- Author -->
-                <form class="lead" method ="post">
-                    by <a href="#">'.$row[1].'</a><br>
-                    Project Status : '.$row[7].'
-                    <button class="btn btn-info btn pull-right" name = "like" onclick="likes()">
-                      <span class="'.$c.'" id ="sp1"></span> '.$a.'</button>
-
-                </form>
-
-
+                
+                by <a href="user_profile.php?id='.$row[1].'" style="text-decoration:none;">'.$row[1].'</a><br>
+                <h4>Campaign Status : <span  class="label label-success">'.$row[7].'</span></h4>
+                <button class="btn btn-info btn" name = "like" onclick="likes()">
+                  <span class="'.$c.'" id ="sp1"></span> '.$a.'</button>
+            
                 <hr>
-
                 <!-- Date/Time -->
                 <p><span class="glyphicon glyphicon-time"></span> Posted on '.$row[8].'
 
                 </p>
-
-
                 <hr>
+                <!-- Preview Image -->';
+                
+                if(!empty($row['cover_page']))
+                {
+                    echo '<img class="img-responsive" alt="" src="data:image;base64,'.$row['cover_page'].'">';
+                }
+                else
+                {
+                    echo '<img class="img-responsive" alt="" src="default-cover-image.jpg">';
+                }
 
-                <!-- Preview Image -->
-                <img class="img-responsive" src="http://placehold.it/900x300?text=No cover image" alt="">
-
-                <hr>
+                echo '<hr>
 
                 <!-- Post Content -->
-                <p class="lead">Project Description:</p>
+                <p class="lead">Campaign Description:</p>
                 <p>'.$row[2].'</p>
                 
-
                 <hr>
 
-                <!-- Blog Comments -->
-
-                <!-- Comments Form -->
                 <div class="well">
                     <h4>Leave a Comment:</h4>
                     <form role="form" method="post">
@@ -139,7 +138,7 @@ echo '
             <div class="container" id ="comms1">';
 
                 while($row1 = mysqli_fetch_array($result1))
-               {
+                {
                	$sqlquery2 = " select profile_pic from users where uname = '".$row1[0]."'";
 				$result2 = $conn->query($sqlquery2);
 				$row2 = mysqli_fetch_array($result2);
@@ -147,19 +146,18 @@ echo '
 
                 <div class="media">';
                 	if(!empty($row2[0]))
-                {
-                	echo'	
-                    <a class="pull-left" href="#">
-                        <img class="round_img" height="40" width="40" src="data:image;base64,'.$row2[0].'"  alt="">
-                    </a>';
-                 }
-                 else
-                 {
-                 	echo'	
-                    <a class="pull-left" href="#">
-                        <img class="round_img" height="40" width="40" src="default-user-image.png"  alt="">
-                    </a>';
-                 }
+                    {
+                    	echo'<a class="pull-left" href="#">
+                            <img class="round_img" height="40" width="40" src="data:image;base64,'.$row2[0].'"  alt="">
+                        </a>';
+                     }
+                     else
+                     {
+                     	echo'	
+                        <a class="pull-left" href="#">
+                            <img class="round_img" height="40" width="40" src="default-user-image.png"  alt="">
+                        </a>';
+                     }
                  echo'
                     <div class="media-body">
                         <h4 class="media-heading">'.$row1[0].'
@@ -175,38 +173,20 @@ echo '
 
             <!-- Blog Sidebar Widgets Column -->
             <div class="col-md-4">
-
-                <!-- Blog Categories Well -->
-                <div class="well">
-                    <h4>Pledge Status:</h4>
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <ul class="list-unstyled">
-                                <li>Minimum Funding Required:
-                                </li>
-                                <li>Maximum Funding Required:
-                                </li>
-                                <li>Amount Pledged:
-                                </li>
-                                <li>Number of Pledges Done:
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-4">
-                            <ul class="list-unstyled">
-                                <li>$'.$row[3].'
-                                </li>
-                                <li> $'.$row[4].'
-                                </li>
-                                <li> $'.$row4[1].'
-                                </li>
-                                <li> '.$row4[0].'
-                                </li>
-                            </ul>
-                        </div>
+            
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="list-group">
+                            <li class="list-group-item text-muted"><bold>Activity</bold><i class="fa fa-dashboard fa-1x"></i></li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong class="">Minimum Funding Reqd </strong></span>
+                            $'.$row[3].'</li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong>Maximum Funding Limit</strong></span>$'.$row[4].'</li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong>Amount Pledged</strong></span>$'.$row4[1].'</li>
+                            <li class="list-group-item text-right"><span class="pull-left"><strong>Pledges</strong></span>$'.$row4[0].'</li>
+                        </ul>
                     </div>
-                    <!-- /.row -->
                 </div>
+            
 
                 <!-- Side Widget Well -->
                 <div class="well">
@@ -238,18 +218,6 @@ echo '
         </div>
         <!-- /.row -->
 
-        <hr>
-
-        <!-- Footer -->
-        <footer>
-            <div class="row">
-                <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website 2014</p>
-                </div>
-            </div>
-            <!-- /.row -->
-        </footer>
-
     </div>
     <!-- /.container -->
 
@@ -258,82 +226,66 @@ echo '
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>';
-    // if(isset($_POST['btnsubmit']))
-    // {
-    //     $comment = $_POST['comment'];
-    //     $sqlquery3 = "insert into comments values('$user_name','$comment','$pname',now())";
-    //     $conn->query($sqlquery3);
-       
-
-    // }
+    
   ?>
   <script>
-        function addcomm()
-         {
-            
-            var comm= document.getElementById("comment").value;
-            
-            var projname = '<?php echo $pname;?>';
+       
+    function addcomm()
+     {
+        
+        var comm= document.getElementById("comment").value;
+        
+        var projname = '<?php echo $pname;?>';
 
+        var uname = '<?php echo $user_name;?>';
+        
+        $.ajax({ url: 'addcomm.php',
+        data: {comm: comm, projname:projname, uname:uname},
+        type: 'post',
+        success: function(out) {
+                  window.location = "projectpage.php?id="+projname;
+              }
+        });
+    }
+
+    function likes()
+        {
+            var projname = '<?php echo $pname;?>';
             var uname = '<?php echo $user_name;?>';
-            
-            $.ajax({ url: 'addcomm.php',
-            data: {comm: comm, projname:projname, uname:uname},
+
+            $.ajax({ url: 'add_like.php',
+            data: {projname: projname, uname: uname},
             type: 'post',
             success: function(out) {
-                      window.location = "projectpage.php?id="+projname;
-                  }
-});
-            
-
-            
-        }
-
-        function likes(e)
-            {
-                e.preventDefault();
-                var projname = '<?php echo $pname;?>';
-                // alert('liked');
-                // document.getElementById('sp1').className = 'glyphicon glyphicon-ok';
-                // document.getElementById('sp1').innerHTML = 'Liked';
-                <?php
-                $sqlquery5 = "insert into likes values('$user_name','$pname')";
-                $conn->query($sqlquery5);
-                ?>
                 window.location = "projectpage.php?id="+projname;
             }
-
-        function redir()
-        {
-            window.location = "add_creditcard.php";
+        });
 
         }
 
-        function pledge()
-        {
-            
-            var projname = '<?php echo $pname;?>';
-            var pledge= document.getElementById("pledgeamt").value;
-            var ccno = document.getElementById("select").value;
-            var uname = '<?php echo $user_name;?>';
+    function redir()
+    {
+        window.location = "add_creditcard.php";
+    }
 
-             $.ajax({ url: 'addpledge.php',
-            data: {pledgeamt: pledge, ccno:ccno, projname:projname,uname:uname },
-            type: 'post',
-            success: function(out) {
-                      window.location = "projectpage.php?id="+projname;
-                  }
-            });
+    function pledge()
+    {
+        
+        var projname = '<?php echo $pname;?>';
+        var pledge= document.getElementById("pledgeamt").value;
+        var ccno = document.getElementById("select").value;
+        var uname = '<?php echo $user_name;?>';
 
-               
+         $.ajax({ url: 'addpledge.php',
+        data: {pledgeamt: pledge, ccno:ccno, projname:projname,uname:uname },
+        type: 'post',
+        success: function(out) {
+                  window.location = "projectpage.php?id="+projname;
+              }
+        });
+    }
 
-        }
-     </script>
-
-
-</body>
-
-</html>
+ </script>
 
 </body>
 </html>

@@ -20,7 +20,21 @@ error_reporting(0);
     <link href="https://fonts.googleapis.com/css?family=Arima+Madurai:100,200,300,400,500,700,800,900" rel="stylesheet">
     <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
     <link href="css/users_style.css" rel="stylesheet" type="text/css">
-
+    <style>
+    .card .header {
+    padding: 15px 20px;
+    height: 110px;
+    }
+    .card .motto{
+    font-family: 'Arima Madurai', cursive;
+    border-bottom: 1px solid #EEEEEE;
+    color: #999999;
+    font-size: 14px;
+    font-weight: 400;
+    padding-bottom: 5px;
+    text-align: center;
+}
+    </style>
 </head>
 <body>
 <?php
@@ -30,23 +44,27 @@ require 'navbar.php';
 $user_name = $_SESSION['user_session'];
 $searchtext = $_SESSION['search_word'];
 
-$sqlquery = $conn->query("select distinct * from users where fname like '%{$searchtext}%' or lname like '%{$searchtext}%' 
+$sqlquery_proj = $conn->query("select distinct * from projects natural join tags where pname like '%{$searchtext}%' or pdesc like '%{$searchtext}%' 
+                            or ptag like '%{$searchtext}%'");
+$count_projects = $sqlquery_proj->num_rows;
+
+$sqlquery_users = $conn->query("select distinct * from users where fname like '%{$searchtext}%' or lname like '%{$searchtext}%' 
                             or uname like '%{$searchtext}%'");
-$count_users = $sqlquery->num_rows;
+$count_users = $sqlquery_users->num_rows;
 ?>
 
 <div class="container">
 	<ul class="nav nav-pills">
-	  <li><a href="search_feed.php">Campaigns <span class="badge">42</span></a></li>
+	  <li><a href="search_feed.php">Campaigns <span class="badge"><?php echo $count_projects; ?></span></a></li>
 	  <li  class="active"><a href="search_feed_users.php">Users <span class="badge"><?php echo $count_users; ?></span></a></li>
 	</ul>
 	<hr>
     <div class="row">
-     <div class="col-sm-10 col-sm-offset-1">
+     <div class="col-sm-12 col-sm-offset-0">
          
          <?php 
             
-             while($row_users = mysqli_fetch_array($sqlquery))
+             while($row_users = mysqli_fetch_array($sqlquery_users))
              {
                 $user = $row_users['uname'];
                 
@@ -62,7 +80,7 @@ $count_users = $sqlquery->num_rows;
                 $sqlquery1 = $conn->query("select * from follows where uname1 = '$user'");
                 $count_following = $sqlquery1->num_rows;
 
-                echo '<div class="col-md-4 col-sm-6">
+                echo '<div class="col-md-3 col-sm-6">
                    <div class="card-container">
                       <div class="card">
                           <div class="front">
@@ -91,22 +109,22 @@ $count_users = $sqlquery->num_rows;
                           </div> <!-- end front panel -->
                           <div class="back">
                               <div class="header">
-                                  <h5 class="motto">View Profile</h5>
+                                  <h5 class="motto"><a href="user_profile.php?id='.$row_user['uname'].'" style="text-decoration:none;">View Profile</a></h5>
                               </div>
                               <div class="content">
                                   <div class="main">
                                       <div class="stats-container">
                                           <div class="stats">
-                                              <h4>'.$count_campaigns.'</h4>
-                                              <p>Campaigns</p>
+                                              <h4>'.$count_followers.'</h4>
+                                              <p style="font-size: 12px;">Follower(s)</p>
                                           </div>
                                           <div class="stats">
-                                              <h4>'.$count_followers.'</h4>
-                                              <p>Followers</p>
+                                              <h4>'.$count_campaigns.'</h4>
+                                              <p style="font-size: 12px;">Campaign(s)</p>
                                           </div>
                                           <div class="stats">
                                               <h4>'.$count_following.'</h4>
-                                              <p>Following</p>
+                                              <p style="font-size: 12px;">Following</p>
                                           </div>
                                       </div>
                                   </div>

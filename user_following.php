@@ -21,7 +21,21 @@ error_reporting(0);
     <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
 
     <link href="css/users_style.css" rel="stylesheet" type="text/css">
-
+    <style>
+    .card .header {
+    padding: 15px 20px;
+    height: 110px;
+    }
+    .card .motto{
+    font-family: 'Arima Madurai', cursive;
+    border-bottom: 1px solid #EEEEEE;
+    color: #999999;
+    font-size: 14px;
+    font-weight: 400;
+    padding-bottom: 5px;
+    text-align: center;
+    }
+    </style>
 </head>
 <body>
 <?php
@@ -29,18 +43,21 @@ session_start();
 require 'db_conn.php';	
 require 'navbar.php';								
 $user_name = $_SESSION['user_session'];
+$user = $_GET['id'];
 
-$query = $conn->query("select * from follows where uname1 = '$user_name'");
+$query = $conn->query("select * from follows where uname1 = '$user'");
 
+$sqlquery = $conn->query("select * from users where uname = '$user'");
+$row_user_details = mysqli_fetch_array($sqlquery);
 
 ?>
 <div class="container">
-  <h1>Following</h1>
+  <h1><?php echo $row_user_details['fname']." "; echo $row_user_details['lname']; ?> follows -</h1>
   <hr>
   <!-- #####################################################################################################################  -->
   
     <div class="row">
-     <div class="col-sm-10 col-sm-offset-1">
+     <div class="col-sm-12 col-sm-offset-0">
          
          <?php 
          while($row_followers = mysqli_fetch_array($query))
@@ -59,7 +76,7 @@ $query = $conn->query("select * from follows where uname1 = '$user_name'");
             $sqlquery = $conn->query("select * from follows where uname1 = '$follower'");
             $count_following = $sqlquery->num_rows;
 
-            echo '<div class="col-md-4 col-sm-6">
+            echo '<div class="col-md-3 col-sm-6">
                <div class="card-container">
                   <div class="card">
                       <div class="front">
@@ -88,23 +105,23 @@ $query = $conn->query("select * from follows where uname1 = '$user_name'");
                       </div> <!-- end front panel -->
                       <div class="back">
                           <div class="header">
-                              <h5 class="motto">View Profile</h5>
+                               <h5 class="motto"><a href="user_profile.php?id='.$row_user['uname'].'" style="text-decoration:none;">View Profile</a></h5>
                           </div>
                           <div class="content">
                               <div class="main">
                                   <div class="stats-container">
                                       <div class="stats">
-                                          <h4>'.$count_campaigns.'</h4>
-                                          <p>Campaigns</p>
+                                        <h4>'.$count_followers.'</h4>
+                                        <p style="font-size: 12px;">Follower(s)</p>
                                       </div>
-                                      <div class="stats">
-                                          <h4>'.$count_followers.'</h4>
-                                          <p>Followers</p>
-                                      </div>
-                                      <div class="stats">
-                                          <h4>'.$count_following.'</h4>
-                                          <p>Following</p>
-                                      </div>
+                                    <div class="stats">
+                                      <h4>'.$count_campaigns.'</h4>
+                                      <p style="font-size: 12px;">Campaign(s)</p>
+                                    </div>
+                                    <div class="stats">
+                                      <h4>'.$count_following.'</h4>
+                                      <p style="font-size: 12px;">Following</p>
+                                    </div>
                                   </div>
                               </div>
                           </div>

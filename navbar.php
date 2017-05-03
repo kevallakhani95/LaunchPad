@@ -95,13 +95,13 @@ if(isset($_POST['btn_submit']))
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search users, campaigns" name="searchtext">
         </div>
-        <button type="submit" class="btn btn-default" name="btn_submit">Submit</button>
+        <button type="submit" class="btn btn-success" name="btn_submit">Submit</button>
       </form>
       <form method="post" class="navbar-form navbar-right" role="search">
         <button type="Submit" class="btn btn-info" name="btn_logout" >Logout</button>
       </form>
       <ul class="nav navbar-nav navbar-right">
-        <li class="active"><a class="navbar-brand" href="user_profile.php">
+        <li class="active"><a class="navbar-brand" href="user_profile.php?id=<?php echo $user_name; ?>">
         <?php
         if(!empty($row[5]))
         {

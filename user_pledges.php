@@ -23,12 +23,16 @@ session_start();
 require 'db_conn.php';	
 require 'navbar.php';								
 $user_name = $_SESSION['user_session'];
+$user = $_GET['id'];
 
-$query = $conn->query("select pname, pamt, date(ptime) as pdate, ccno from pledges where uname='$user_name'");
+$query = $conn->query("select pname, pamt, date(ptime) as pdate, ccno from pledges where uname='$user'");
+
+$sqlquery = $conn->query("select * from users where uname = '$user'");
+$row_user_details = mysqli_fetch_array($sqlquery);
 
 ?>
 <div class="container">
-  <h1>Pledges</h1>
+  <h1><?php echo $row_user_details['fname']." "; echo $row_user_details['lname']; ?>'s Pledges -</h1>
   <hr>
   <table class="table table-striped table-hover ">
     <thead>
