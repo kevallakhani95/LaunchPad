@@ -19,6 +19,7 @@
    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
+
 </head>
 
 <body>
@@ -45,10 +46,17 @@
       $pmaxamt = $_POST['maxamt'];
       $penddate = $_POST['penddate'];
       $pcompdate = $_POST['pcompdate'];
+      $tags = $_POST['tags'];
+      $location = $_POST['location'];
+
       
+
+      $tagarr = explode(",", $tags);   
+     
+     
       if(getimagesize($_FILES['covpic']['tmp_name']) == FALSE)
       {
-        echo "Please select an image.";
+        // echo "Please select an image.";
       }
       
       $imageFile = $_FILES['covpic']['name'];
@@ -57,8 +65,15 @@
       $image = file_get_contents($image);
       $image = base64_encode($image);
 
-      $sqlquery = "insert into projects values('$pname', '$usrName', '$pdesc', '$pminamt', '$pmaxamt', '$penddate', '$pcompdate', 'Funding', now(), '$image')";
+      $sqlquery = "insert into projects values('$pname', '$usrName', '$pdesc', '$pminamt', '$pmaxamt', '$penddate', '$pcompdate', 'Funding', now(), '$image','$location')";
       $result = $conn->query($sqlquery);
+
+      for($i = 0; $i < sizeof($tagarr);$i++)
+      {
+          $tag = $tagarr[$i];
+          $sqlquery4 = "insert into tags values('$pname','$tag')";
+          $conn->query($sqlquery4);
+      }
 
        echo '<div class="alert alert-dismissible alert-success" style = "margin-top:-22px">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -120,6 +135,22 @@
         <input class="input-group" type="file" name="covpic" accept="image/*" style="margin-top: 12px"/>
       </div>
     </div>
+
+    <div class="form-group">
+      <label for="tags" class="col-lg-2 control-label">Add Tags:</label>
+      <div class="col-lg-8">
+        <input type="text" class="form-control" name="tags" placeholder="Seperate tags by comma(,)" required="">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="location" class="col-lg-2 control-label">Location:</label>
+      <div class="col-lg-8">
+        <input type="text" class="form-control" name="location" placeholder="Location" required="">
+      </div>
+    </div>
+
+
     <br>
     <div class="form-group">
       <div class="col-lg-8 col-lg-offset-2">
@@ -130,7 +161,6 @@
 
   </fieldset>
   </form>
-
   
   </body>
 </html>
