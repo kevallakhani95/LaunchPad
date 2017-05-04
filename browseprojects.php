@@ -126,7 +126,7 @@ $sqlquery_projects = $conn->query("select p.pname, p.uname, p.cover_page, p.psta
                       </div> <!-- end front panel -->
                       <div class="back">
                           <div class="header">
-                              <h5 class="motto">View Project</h5>
+                              <h5 class="motto"><a href="projectpage.php?id='.$row_proj['pname'].'">View Project</a></h5>
                           </div>
                           <div class="content" >
                               <div class="main">

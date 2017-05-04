@@ -61,7 +61,7 @@ $sqlquery=$conn->query("select NULL, f.uname2, c.pname, date(c.commtime),c.commt
                     '.$row[3].' <span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
                 </span> 
                 
-                <i class="glyphicon glyphicon-user icon-activity"></i> <a href="#">'.$row[1].'</a> liked <a href="#">'.$row[2].'</a>
+                <i class="glyphicon glyphicon-user icon-activity"></i> <a href="user_profile.php?id='.$row[0].'">'.$row[0].'</a> liked <a href="projectpage.php?id='.$row[2].'">'.$row[2].'</a>
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@ $sqlquery=$conn->query("select NULL, f.uname2, c.pname, date(c.commtime),c.commt
                     '.$row[3].' <span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
                 </span> 
                 
-                <i class="glyphicon glyphicon-user icon-activity"></i> <a href="#">'.$row[0].'</a> commented on <a href="#">'.$row[2].'</a>
+                <i class="glyphicon glyphicon-user icon-activity"></i> <a href="user_profile.php?id='.$row[1].'">'.$row[1].'</a> commented on <a href="projectpage.php?id='.$row[2].'">'.$row[2].'</a>
             </div>
           </div>
         </div>
@@ -92,7 +92,7 @@ $sqlquery=$conn->query("select NULL, f.uname2, c.pname, date(c.commtime),c.commt
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-12">
-            Update on <a href="#">'.$row[6].'</a> by <a href="#">'.$row[5].'</a>
+            Update on <a href="projectpage.php?id='.$row[6].'">'.$row[6].'</a> by <a href="user_profile.php?id='.$row[5].'">'.$row[5].'</a>
             <span class="pull-right text-muted small time-line">
                         '.$row[7].'<span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
                     </span> 
@@ -130,11 +130,11 @@ $sqlquery=$conn->query("select NULL, f.uname2, c.pname, date(c.commtime),c.commt
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-12">
-          <a href="#">'.$row[2].'</a> added a new Campaign
+          <a href="user_profile.php?id='.$row[2].'">'.$row[2].'</a> added a new Campaign
           <span class="pull-right text-muted small time-line">
                         '.$row[6].'<span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
                     </span> 
-            <h4><strong>'.$row[0].'</strong></h4>
+            <h4><strong><a href="projectpage.php?id='.$row[0].'">'.$row[0].'</a></strong></h4>
           </div>
         </div>
         <div class="row">
