@@ -24,37 +24,145 @@ require 'db_conn.php';
 require 'navbar.php';								
 $user_name = $_SESSION['user_session'];
 
-$sqlquery=$conn->query("select * from users where uname='$user_name'");   
-$row = $sqlquery->fetch_array();
+$sqlquery=$conn->query("select NULL, f.uname2, c.pname, date(c.commtime),c.commtime as d,NULL,NULL,NULL
+                        from follows f,comments c
+                        where f.uname1 ='$user_name' and f.uname2 = c.uname  
+                        union
+                        (select f.uname2,NULL, l.project_name, date(l.datetime),l.datetime as d,NULL,NULL,NULL
+                        from follows f,likes l
+                        where f.uname1 ='$user_name' and f.uname2 = l.user_name)
+                        union
+                        (select u.upname, u.updesc,NULL, u.media,u.timestamp as d, p.uname, p.pname, date(u.timestamp)
+                        from follows f,updates u, projects p
+                        where f.uname1 ='$user_name' and u.pname = p.pname and p.uname = f.uname2)
+                        union
+                        (select u.upname, u.updesc,NULL, u.media,u.timestamp as d, p.uname, p.pname, date(u.timestamp)
+                        from likes l, updates u, projects p
+                        where l.user_name ='$user_name' and l.project_name=p.pname and p.pname = u.pname)
+                        union
+                        (select p.pname, p.pdesc, p.uname,NULL, p.datetime as d, p.cover_page, date(p.datetime),NULL
+                        from follows f,projects p
+                        where f.uname1 ='$user_name' and f.uname2 = p.uname ) order by d desc
+
+                           ");   
 ?>
-<div class="container">
-  <ul class="nav nav-pills">
-    <li class="active"><a href="home.php">Campaignns</a></li>
-    <li><a href="recentlikes.php">Likes</a></li>
-    <li><a href="recentcomments.php">Comments</a></li>
-    <li><a href="recentupdates.php">Updates</a></li>
-  </ul>
-  <hr>
-  <div class="row">
-  <div class="col-md-12">
-    <div class="row">
+<hr>
+
+<?php
+  while($row = mysqli_fetch_array($sqlquery))
+{  
+  if(!$row[1])
+ {   
+      echo'
+        <div class="container" style="margin-top:20px;">
+          <div class="row">
+            <div class="col-md-12"> 
+                <span class="pull-right text-muted small time-line">
+                    '.$row[3].' <span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
+                </span> 
+                
+                <i class="glyphicon glyphicon-user icon-activity"></i> <a href="#">'.$row[1].'</a> liked <a href="#">'.$row[2].'</a>
+            </div>
+          </div>
+        </div>
+        <hr>';
+  }
+  else if(!$row[0])
+  {
+      echo'
+        <div class="container" style="margin-top:20px;">
+          <div class="row">
+            <div class="col-md-12"> 
+                <span class="pull-right text-muted small time-line">
+                    '.$row[3].' <span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
+                </span> 
+                
+                <i class="glyphicon glyphicon-user icon-activity"></i> <a href="#">'.$row[0].'</a> commented on <a href="#">'.$row[2].'</a>
+            </div>
+          </div>
+        </div>
+        <hr>';
+  }
+
+  else if(!$row[2])
+  {
+    echo'
+    <div class="container" style="margin-top:20px;">
+      <div class="row">
       <div class="col-md-12">
-        <h4><strong><a href="#">Title of the post</a></strong></h4>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-3">
-        <a href="#" class="thumbnail">
-            <img src="http://placehold.it/260x180" alt="">
-        </a>
-      </div>
-      <div class="col-md-9">      
-        <p>
-          Lorem ipsum dolor sit amet, id nec conceptam conclusionemque. Et eam tation option. Utinam salutatus ex eum. Ne mea dicit tibique facilisi, ea mei omittam explicari conclusionemque, ad nobis propriae quaerendum sea.
-        </p>
-        <p><a class="btn" href="#">Read more</a></p>
-      </div>
-    </div>
+        <div class="row">
+          <div class="col-md-12">
+            Update on <a href="#">'.$row[6].'</a> by <a href="#">'.$row[5].'</a>
+            <span class="pull-right text-muted small time-line">
+                        '.$row[7].'<span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
+                    </span> 
+            <h4><strong>'.$row[0].'</strong></h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">';
+                if(!empty($row[3]))
+                    {
+                        echo '<img class="img-responsive" alt="" src="data:image;base64,'.$row[3].'">';
+                    }
+                    else
+                    {
+                        echo '<img class="img-responsive" alt="" src="default-cover-image.jpg">';
+                    }
+          echo'
+          </div>
+          <div class="col-md-9">      
+            <p>
+              '.$row[1].'
+            </p>
+          </div>
+        </div>
+        <hr>
+        </div>
+        ';
+      }
+
+      else if(!$row[3])
+      {
+        echo'
+    <div class="container" style="margin-top:20px;">
+      <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12">
+          <a href="#">'.$row[2].'</a> added a new Campaign
+          <span class="pull-right text-muted small time-line">
+                        '.$row[6].'<span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
+                    </span> 
+            <h4><strong>'.$row[0].'</strong></h4>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">';
+                if(!empty($row[5]))
+                    {
+                        echo '<img class="img-responsive" alt="" src="data:image;base64,'.$row[5].'">';
+                    }
+                    else
+                    {
+                        echo '<img class="img-responsive" alt="" src="default-cover-image.jpg">';
+                    }
+          echo'
+          </div>
+          <div class="col-md-9">      
+            <p>
+              '.$row[1].'
+            </p>
+          </div>
+        </div>
+        <hr>
+        </div>';
+
+      }
+  
+}
+?>
+  
 
 </body>
 </html>
