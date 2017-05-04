@@ -99,7 +99,7 @@ $count_users = $sqlquery_users->num_rows;
             $sqlquery1 = $conn->query("select sum(pamt) as tot_funds from pledges where pname = '$project'");
             $total_funds = mysqli_fetch_assoc($sqlquery1);
 
-            $sqlquery1 = $conn->query("select pminamt, location from projects where pname = '$project'");
+            $sqlquery1 = $conn->query("select pminamt, pmaxamt, location from projects where pname = '$project'");
             $project_details = mysqli_fetch_assoc($sqlquery1);
 
             if(is_null($total_funds['tot_funds']))
@@ -107,12 +107,14 @@ $count_users = $sqlquery_users->num_rows;
                 $total_funds['tot_funds'] = '0';
             }
             
-            $percent_funded = intval(($total_funds['tot_funds']/$project_details['pminamt'])*100);
+            $percent_funded = intval(($total_funds['tot_funds']/$project_details['pmaxamt'])*100);
+            
             if($percent_funded > 100)
             {
                 $percent_funded = '100';
             }
-             echo '<div class="col-md-3 col-sm-4">
+
+            echo '<div class="col-md-3 col-sm-4">
                  <div class="card-container">
                     <div class="card">
                         <div class="front">

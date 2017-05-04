@@ -82,7 +82,7 @@ $sqlquery_projects = $conn->query("select p.pname, p.uname, p.cover_page, p.psta
           $sqlquery1 = $conn->query("select sum(pamt) as tot_funds from pledges where pname = '$project'");
           $total_funds = mysqli_fetch_assoc($sqlquery1);
 
-          $sqlquery1 = $conn->query("select pminamt, location from projects where pname = '$project'");
+          $sqlquery1 = $conn->query("select pminamt, pmaxamt, location from projects where pname = '$project'");
           $project_details = mysqli_fetch_assoc($sqlquery1);
 
           if(is_null($total_funds['tot_funds']))
@@ -90,7 +90,7 @@ $sqlquery_projects = $conn->query("select p.pname, p.uname, p.cover_page, p.psta
               $total_funds['tot_funds'] = '0';
           }
           
-          $percent_funded = intval(($total_funds['tot_funds']/$project_details['pminamt'])*100);
+          $percent_funded = intval(($total_funds['tot_funds']/$project_details['pmaxamt'])*100);
           if($percent_funded > 100)
           {
               $percent_funded = '100';
@@ -126,7 +126,7 @@ $sqlquery_projects = $conn->query("select p.pname, p.uname, p.cover_page, p.psta
                       </div> <!-- end front panel -->
                       <div class="back">
                           <div class="header">
-                              <h5 class="motto"><a href="projectpage.php?id='.$row_proj['pname'].'">View Project</a></h5>
+                              <h5 class="motto">View Project</h5>
                           </div>
                           <div class="content" >
                               <div class="main">

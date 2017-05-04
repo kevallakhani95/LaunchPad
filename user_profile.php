@@ -74,7 +74,6 @@ $count_pledges = $sqlquery->num_rows;
 $sqlquery_fol = $conn->query("select * from follows where uname1 = '$user_name' and uname2 = '$user'");
 $follows_flag = $sqlquery_fol->num_rows;
 
-
 $sqlquery_follow = $conn->query("select * from follows where uname1 = '$user' and uname2 = '$user_name'");
 $following_flag = $sqlquery_follow->num_rows;
 
@@ -193,7 +192,7 @@ else
 							            $sqlquery1 = $conn->query("select sum(pamt) as tot_funds from pledges where pname = '$project'");
 							            $total_funds = mysqli_fetch_assoc($sqlquery1);
 
-							            $sqlquery1 = $conn->query("select pminamt, location from projects where pname = '$project'");
+							            $sqlquery1 = $conn->query("select pminamt, pmaxamt, location from projects where pname = '$project'");
 							            $project_details = mysqli_fetch_assoc($sqlquery1);
 
 							            if(is_null($total_funds['tot_funds']))
@@ -201,7 +200,7 @@ else
 							                $total_funds['tot_funds'] = '0';
 							            }
 							            
-							            $percent_funded = intval(($total_funds['tot_funds']/$project_details['pminamt'])*100);
+							            $percent_funded = intval(($total_funds['tot_funds']/$project_details['pmaxamt'])*100);
 							            if($percent_funded > 100)
 							            {
 							                $percent_funded = '100';

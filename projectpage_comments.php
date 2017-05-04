@@ -62,9 +62,6 @@ $sqlquery5 = "select * from likes where user_name='$user_name' and project_name=
 $result5 = $conn->query($sqlquery5);
 $row5 = mysqli_fetch_array($result5);
 
-$sqlquery_up = $conn->query("select pname, upname, updesc, media, date(timestamp) as ts from updates where pname = '$pname'");
-$count_updates = $sqlquery_up->num_rows;
-
 $sqlquery7 = "select ccno from creditcard where uname='$user_name'";
 $result7 = $conn->query($sqlquery7);
 
@@ -150,19 +147,53 @@ echo '
                 <hr>
 
                 <ul class="nav nav-pills">
-                  <li class="active"><a href="projectpage.php?id='.$pname.'">Updates</a></li>
-                  <li><a href="projectpage_comments.php?id='.$pname.'">Comments</a></li>
+                  <li><a href="projectpage.php?id='.$pname.'">Updates</a></li>
+                  <li class="active"><a href="projectpage_comments.php?id='.$pname.'">Comments</a></li>
                 </ul>
+                <br>
+                    <div class="well">
+                        <h4>Leave a Comment:</h4>
+                        <form role="form" method="post">
+                            <div class="form-group">
+                                <textarea class="form-control" id ="comment" rows="2" required=""></textarea>
+                            </div>
+                            <input type="button" class="btn btn-primary" name="btnsubmit"value="Submit" onclick="addcomm()">
+                        </form>
+                    </div>
+                    <hr>
 
-                <hr>';
+                    <div class="container" id ="comms1">';
 
-                if($count_updates == 0)
-                {
-                    echo '<h4 class="text-muted" style="text-align: center; font-size: 20px;">There are no updates for this campaign.</h4>';
-                }
-                
-                echo'<hr>
-                </div>
+                    while($row1 = mysqli_fetch_array($result1))
+                    {
+                       	$sqlquery2 = " select profile_pic from users where uname = '".$row1[0]."'";
+        				$result2 = $conn->query($sqlquery2);
+        				$row2 = mysqli_fetch_array($result2);
+                       	
+                        echo'<div class="media">';
+                        	
+                        if(!empty($row2[0]))
+                        {
+                        	echo'<a class="pull-left" href="#">
+                                <img class="round_img" height="40" width="40" src="data:image;base64,'.$row2[0].'"  alt="">
+                            </a>';
+                         }
+                         else
+                         {
+                         	echo'<a class="pull-left" href="#">
+                                <img class="round_img" height="40" width="40" src="default-user-image.png"  alt="">
+                            </a>';
+                         }
+
+                         echo'<div class="media-body">
+                                <h4 class="media-heading">'.$row1[0].'<small>  commented at  '.$row1[3].'</small></h4>'.$row1[1].'
+                            </div>
+                        </div>';
+                    }
+             
+             echo'</div> 
+             <hr>
+            </div>
 
             <!-- Blog Sidebar Widgets Column -->
             <div class="col-md-4">
@@ -230,21 +261,39 @@ echo '
     
   ?>
   <script>
-
-    function likes()
-    {
+       
+    function addcomm()
+     {
+        
+        var comm= document.getElementById("comment").value;
+        
         var projname = '<?php echo $pname;?>';
-        var uname = '<?php echo $user_name;?>';
 
-        $.ajax({ url: 'add_like.php',
-        data: {projname: projname, uname: uname},
+        var uname = '<?php echo $user_name;?>';
+        
+        $.ajax({ url: 'addcomm.php',
+        data: {comm: comm, projname:projname, uname:uname},
         type: 'post',
         success: function(out) {
-            window.location = "projectpage.php?id="+projname;
-        }
-    });
-
+                  window.location = "projectpage_comments.php?id="+projname;
+              }
+        });
     }
+
+    function likes()
+        {
+            var projname = '<?php echo $pname;?>';
+            var uname = '<?php echo $user_name;?>';
+
+            $.ajax({ url: 'add_like.php',
+            data: {projname: projname, uname: uname},
+            type: 'post',
+            success: function(out) {
+                window.location = "projectpage.php?id="+projname;
+            }
+        });
+
+        }
 
     function redir()
     {
