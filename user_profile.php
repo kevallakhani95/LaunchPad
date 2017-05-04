@@ -237,7 +237,7 @@ else
 							                        </div> <!-- end front panel -->
 							                        <div class="back">
 							                            <div class="header">
-							                                <h5 class="motto">View Project</h5>
+							                                <h5 class="motto"><a href="projectpage.php?id='.$row_proj['pname'].'" style="text-decoration:none;">View Project</a></h5>
 							                            </div>
 							                            <div class="content" >
 							                                <div class="main">

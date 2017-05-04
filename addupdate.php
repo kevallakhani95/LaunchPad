@@ -31,8 +31,9 @@
   require "db_conn.php";
   
   
-  $usrName = $_SESSION['user_session'];
-  
+  $user_name = $_SESSION['user_session'];
+  $pname = $_GET['id'];
+
   if(isset($_POST['btncancel']))
   { 
       header("Location: addupdate.php");
@@ -42,8 +43,6 @@
   {
       $upname = $_POST['upname'];
       $updesc = $_POST['updesc'];
-
-      $pname = 'p6';
       
       $tagarr = explode(",", $tags);   
      
@@ -66,6 +65,10 @@
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong>Well done!</strong> Your project has been successfully added</a>.
         </div>';
+
+      echo '<script>
+              window.location = "projectpage.php?id='.$pname.'";
+            </script>';
 
   }
 ?>

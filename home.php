@@ -42,73 +42,72 @@ $sqlquery=$conn->query("select NULL, f.uname2, c.pname, date(c.commtime),c.commt
                         union
                         (select p.pname, p.pdesc, p.uname,NULL, p.datetime as d, p.cover_page, date(p.datetime),NULL
                         from follows f,projects p
-                        where f.uname1 ='$user_name' and f.uname2 = p.uname ) order by d desc
-
-                           ");   
+                        where f.uname1 ='$user_name' and f.uname2 = p.uname ) order by d desc");   
 ?>
-<hr>
 
 <?php
   while($row = mysqli_fetch_array($sqlquery))
-{  
-  if(!$row[1])
+{                   
+  if(!$row[1])                                    //Likes
  {   
       echo'
-        <div class="container" style="margin-top:20px;">
+        <div class="container" style="">
           <div class="row">
             <div class="col-md-12"> 
                 <span class="pull-right text-muted small time-line">
-                    '.$row[3].' <span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
+                    '.$row[3].'  <span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
                 </span> 
                 
-                <i class="glyphicon glyphicon-user icon-activity"></i> <a href="user_profile.php?id='.$row[0].'">'.$row[0].'</a> liked <a href="projectpage.php?id='.$row[2].'">'.$row[2].'</a>
+                <i class="glyphicon glyphicon-user icon-activity"></i> <a href="user_profile.php?id='.$row[0].'" style="text-decoration:none;">'.$row[0].'</a> liked <a href="projectpage.php?id='.$row[2].'" style="text-decoration:none;">'.$row[2].'</a>
             </div>
           </div>
+        <hr>
         </div>
-        <hr>';
+        ';
   }
-  else if(!$row[0])
+  else if(!$row[0])                              //Comments
   {
       echo'
-        <div class="container" style="margin-top:20px;">
+        <div class="container" style="">
           <div class="row">
             <div class="col-md-12"> 
                 <span class="pull-right text-muted small time-line">
                     '.$row[3].' <span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
                 </span> 
                 
-                <i class="glyphicon glyphicon-user icon-activity"></i> <a href="user_profile.php?id='.$row[1].'">'.$row[1].'</a> commented on <a href="projectpage.php?id='.$row[2].'">'.$row[2].'</a>
+                <i class="glyphicon glyphicon-user icon-activity"></i> <a href="user_profile.php?id='.$row[1].'" style="text-decoration:none;">'.$row[1].'</a> commented on <a href="projectpage.php?id='.$row[2].'" style="text-decoration:none;">'.$row[2].'</a>
             </div>
           </div>
+        <hr>
         </div>
-        <hr>';
+        ';
   }
 
-  else if(!$row[2])
+  else if(!$row[2])                             //Updates
   {
     echo'
-    <div class="container" style="margin-top:20px;">
+    <div class="container" style="">
       <div class="row">
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-12">
-            Update on <a href="projectpage.php?id='.$row[6].'">'.$row[6].'</a> by <a href="user_profile.php?id='.$row[5].'">'.$row[5].'</a>
+            Update on <a href="projectpage.php?id='.$row[6].'" style="text-decoration:none;">'.$row[6].'</a> by <a href="user_profile.php?id='.$row[5].'" style="text-decoration:none;">'.$row[5].'</a>
             <span class="pull-right text-muted small time-line">
-                        '.$row[7].'<span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
+                        '.$row[7].' <span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
                     </span> 
             <h4><strong>'.$row[0].'</strong></h4>
           </div>
         </div>
         <div class="row">
           <div class="col-md-3">';
-                if(!empty($row[3]))
-                    {
-                        echo '<img class="img-responsive" alt="" src="data:image;base64,'.$row[3].'">';
-                    }
-                    else
-                    {
-                        echo '<img class="img-responsive" alt="" src="default-cover-image.jpg">';
-                    }
+            if(!empty($row[3]))
+                {
+                    echo '<img class="img-responsive" alt="" src="data:image;base64,'.$row[3].'" style="max-width: 200px; max-height: 100px; overflow: hidden;">';
+                }
+                else
+                {
+                    echo '<img class="img-responsive" alt="" src="default-cover-image.jpg" style="max-width: 200px; max-height: 100px; overflow: hidden;">';
+                }
           echo'
           </div>
           <div class="col-md-9">      
@@ -122,34 +121,34 @@ $sqlquery=$conn->query("select NULL, f.uname2, c.pname, date(c.commtime),c.commt
         ';
       }
 
-      else if(!$row[3])
+      else if(!$row[3])                           //Cmpaign
       {
         echo'
-    <div class="container" style="margin-top:20px;">
+    <div class="container" style="">
       <div class="row">
       <div class="col-md-12">
         <div class="row">
           <div class="col-md-12">
-          <a href="user_profile.php?id='.$row[2].'">'.$row[2].'</a> added a new Campaign
+          <a href="user_profile.php?id='.$row[2].'" style="text-decoration:none;">'.$row[2].'</a> added a new campaign
           <span class="pull-right text-muted small time-line">
-                        '.$row[6].'<span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
+                        '.$row[6].' <span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom" title="Lundi 24 Avril 2014 à 18h25"></span>
                     </span> 
-            <h4><strong><a href="projectpage.php?id='.$row[0].'">'.$row[0].'</a></strong></h4>
+            <h4><strong><a href="projectpage.php?id='.$row[0].'" style="text-decoration:none;">'.$row[0].'</a></strong></h4>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-3">';
+          <div class="col-md-2">';
                 if(!empty($row[5]))
-                    {
-                        echo '<img class="img-responsive" alt="" src="data:image;base64,'.$row[5].'">';
-                    }
-                    else
-                    {
-                        echo '<img class="img-responsive" alt="" src="default-cover-image.jpg">';
-                    }
+                {
+                  echo '<img class="img-responsive" alt="" src="data:image;base64,'.$row[5].'" style="max-width: 200px; max-height: 100px; overflow: hidden;">';
+                }
+                else
+                {
+                  echo '<img class="img-responsive" alt="" src="default-cover-image.jpg" style="max-width: 200px; max-height: 100px; overflow: hidden;">';
+                }
           echo'
           </div>
-          <div class="col-md-9">      
+          <div class="col-md-10">      
             <p>
               '.$row[1].'
             </p>

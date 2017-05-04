@@ -31,8 +31,9 @@
   require "db_conn.php";
   
   
-  $usrName = $_SESSION['user_session'];
+  $user_name = $_SESSION['user_session'];
   
+
   if(isset($_POST['btncancel']))
   { 
       header("Location: home.php");

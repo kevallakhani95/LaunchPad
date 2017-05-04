@@ -52,10 +52,10 @@ if(isset($_POST['btn_logout']))
 
 if(isset($_POST['btn_submit']))
 {
-    $URL="search_feed.php";
-    echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
     $searchtext = $_POST['searchtext'];
-    $_SESSION['search_word'] = $searchtext;
+    $URL='search_feed.php?search='.$searchtext.'';
+    
+    echo "<script type='text/javascript'>document.location.href='{$URL}';</script>";
 }
 
 
@@ -75,7 +75,7 @@ if(isset($_POST['btn_submit']))
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Recent Activity<span class="sr-only">(current)</span></a></li>
+        <li class="active"><a href="home.php">Home<span class="sr-only">(current)</span></a></li>
         <li><a href="upload.php">Launch Campaign</a></li>
         <li><a href="browseprojects.php">Browse Campaigns</a></li>
         <!-- <li class="dropdown">

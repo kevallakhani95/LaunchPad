@@ -50,7 +50,7 @@ session_start();
 require 'db_conn.php';	
 require 'navbar.php';								
 $user_name = $_SESSION['user_session'];
-$searchtext = $_SESSION['search_word'];
+$searchtext = $_GET['search'];
 
 $sqlquery_proj = $conn->query("select distinct p.pname, p.uname, p.cover_page, p.pstatus, 
                                 case when DATEDIFF(date(penddate), date(now())) < 1 then 0 
@@ -68,8 +68,8 @@ $count_users = $sqlquery_users->num_rows;
 
 <div class="container">
 	<ul class="nav nav-pills">
-	  <li class="active"><a href="search_feed.php">Campaigns <span class="badge"><?php echo $count_projects; ?></span></a></li>
-	  <li><a href="search_feed_users.php">Users <span class="badge"><?php echo $count_users; ?></span></a></li>
+	  <li class="active"><a href='search_feed.php?search=<?php echo $searchtext;?>'>Campaigns <span class="badge"><?php echo $count_projects; ?></span></a></li>
+	  <li><a href='search_feed_users.php?search=<?php echo $searchtext; ?>'>Users <span class="badge"><?php echo $count_users; ?></span></a></li>
 	</ul>
 	<hr>
     
@@ -144,7 +144,7 @@ $count_users = $sqlquery_users->num_rows;
                         </div> <!-- end front panel -->
                         <div class="back">
                             <div class="header">
-                                <h5 class="motto">View Project</h5>
+                                <h5 class="motto"><a href="projectpage.php?id='.$row_proj['pname'].'" style="text-decoration:none;">View Project</a></h5>
                             </div>
                             <div class="content" >
                                 <div class="main">

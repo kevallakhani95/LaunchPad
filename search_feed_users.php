@@ -42,10 +42,13 @@ session_start();
 require 'db_conn.php';	
 require 'navbar.php';								
 $user_name = $_SESSION['user_session'];
-$searchtext = $_SESSION['search_word'];
+$searchtext = $_GET['search'];
 
-$sqlquery_proj = $conn->query("select distinct * from projects natural join tags where pname like '%{$searchtext}%' or pdesc like '%{$searchtext}%' 
-                            or ptag like '%{$searchtext}%'");
+$sqlquery_proj = $conn->query("select distinct p.pname, p.uname, p.cover_page, p.pstatus, 
+                                case when DATEDIFF(date(penddate), date(now())) < 1 then 0 
+                                    else DATEDIFF(date(penddate), date(now())) END as ddate 
+                                from projects as p left join tags as t on p.pname = t.pname where p.pname like '%{$searchtext}%' 
+                            or p.pdesc like '%{$searchtext}%' or t.ptag like '%{$searchtext}%'");
 $count_projects = $sqlquery_proj->num_rows;
 
 $sqlquery_users = $conn->query("select distinct * from users where fname like '%{$searchtext}%' or lname like '%{$searchtext}%' 
@@ -55,8 +58,8 @@ $count_users = $sqlquery_users->num_rows;
 
 <div class="container">
 	<ul class="nav nav-pills">
-	  <li><a href="search_feed.php">Campaigns <span class="badge"><?php echo $count_projects; ?></span></a></li>
-	  <li  class="active"><a href="search_feed_users.php">Users <span class="badge"><?php echo $count_users; ?></span></a></li>
+	  <li><a href='search_feed.php?search=<?php echo $searchtext; ?>'>Campaigns <span class="badge"><?php echo $count_projects; ?></span></a></li>
+    <li class="active"><a href='search_feed_users.php?search=<?php echo $searchtext; ?>'>Users <span class="badge"><?php echo $count_users; ?></span></a></li>
 	</ul>
 	<hr>
     <div class="row">

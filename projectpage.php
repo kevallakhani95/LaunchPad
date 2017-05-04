@@ -62,7 +62,7 @@ $sqlquery5 = "select * from likes where user_name='$user_name' and project_name=
 $result5 = $conn->query($sqlquery5);
 $row5 = mysqli_fetch_array($result5);
 
-$sqlquery_up = $conn->query("select pname, upname, updesc, media, date(timestamp) as ts from updates where pname = '$pname'");
+$sqlquery_up = $conn->query("select pname, upname, updesc, media, date(timestamp) as ts from updates where pname = '$pname' order by timestamp desc");
 $count_updates = $sqlquery_up->num_rows;
 
 $sqlquery7 = "select ccno from creditcard where uname='$user_name'";
@@ -112,9 +112,17 @@ echo '
                 by <a href="user_profile.php?id='.$row[1].'" style="text-decoration:none;">'.$row[1].'</a><br>
                 <h4>Campaign Status : <span  class="label label-success">'.$row[7].'</span></h4>
                 <button class="btn btn-info btn" name = "like" onclick="likes()">
-                  <span class="'.$c.'" id ="sp1"></span> '.$a.'</button>
+                  <span class="'.$c.'" id ="sp1"></span> '.$a.'</button>';
+                  
+                  if($user_name == $row[1])
+                  {
+                    echo '<div class="pull-right">
+                    <button class="btn btn-warning" name = "add_update" onclick="update()">Add Update</button>
+                    <button class="btn btn-danger" name = "add_update" onclick="change_status()">Status: Complete</button>
+                    </div>';
+                  }
             
-                <hr>
+                echo '<hr>
                 <!-- Date/Time -->
                 <p><span class="glyphicon glyphicon-time"></span> Posted on '.$row[8].' 
                     <span class="pull-right">'.$row['location'].' <span class="glyphicon glyphicon-home"></span></span></p>
@@ -123,11 +131,12 @@ echo '
                 
                 <hr>
 
-                <p><span class="glyphicon glyphicon-tags"></span><strong> Tags: </strong>';
+                <p><span class="glyphicon glyphicon-tags" ></span><strong> Tags: </strong>';
 
                 while($row_tags = mysqli_fetch_array($sqlquery_tag))
                 {
-                    echo '<span class="label label-default" style="font-size: 15px; margin-left: 10px;">'.$row_tags['ptag'].'</span>';
+                    echo '<span class="label label-default" style="font-size: 15px; margin-left: 10px;">
+                    <a href="search_feed.php?search='.$row_tags['ptag'].'" style="color: white; text-decoration: none">'.$row_tags['ptag'].'</a></label></span>';
                 }
                 
                 echo '</p><hr>';
@@ -154,14 +163,53 @@ echo '
                   <li><a href="projectpage_comments.php?id='.$pname.'">Comments</a></li>
                 </ul>
 
-                <hr>';
+                <hr>
+                <div class="container">';
 
                 if($count_updates == 0)
                 {
                     echo '<h4 class="text-muted" style="text-align: center; font-size: 20px;">There are no updates for this campaign.</h4>';
                 }
+                else
+                {
+                    while($row_updates = mysqli_fetch_array($sqlquery_up))
+                    {
+                        echo '
+                          <div class="row">
+                            <div class = "col-lg-8">
+                               <h4>Update #'.$count_updates.'
+                                <span class="pull-right text-muted small time-line">
+                                            '.$row_updates['ts'].' <span class="glyphicon glyphicon-time timestamp" data-toggle="tooltip" data-placement="bottom"></span>
+                                        </span> </h4>
+                                <h3><strong>'.$row_updates['upname'].'</strong></h3>
+
+                                <div class="row">
+                                <div class="col-md-3">';
+                                if(!empty($row_updates['media']))
+                                {
+                                    echo '<img class="img-responsive" alt="" src="data:image;base64,'.$row_updates['media'].'" style="max-width: 200px; max-height: 100px; overflow: hidden;">';
+                                }
+                                else
+                                {
+                                    echo '<img class="img-responsive" alt="" src="default-cover-image.jpg" style="max-width: 200px; max-height: 100px; overflow: hidden;">';
+                                }
+                              
+                              echo'
+                              </div>
+                              <div class="col-md-8">
+                              <p>'.$row_updates['updesc'].'</p>
+                                
+                                </div>
+                                </div>
+                              <hr>
+                            </div>
+                            </div>
+                            ';
+                            $count_updates = $count_updates - 1;
+                    }
+                }
                 
-                echo'<hr>
+                echo'</div>
                 </div>
 
             <!-- Blog Sidebar Widgets Column -->
@@ -231,6 +279,11 @@ echo '
   ?>
   <script>
 
+    function tag_clicked()
+    {
+        var tag = "<?php echo $row_tags['ptag'];?>";
+        alert(tag);
+    }
     function likes()
     {
         var projname = '<?php echo $pname;?>';
@@ -244,6 +297,24 @@ echo '
         }
     });
 
+    }
+
+    function update()
+    {
+        var projname = '<?php echo $pname;?>';
+        window.location = "addupdate.php?id="+projname;
+    }
+
+    function change_status()
+    {
+        var projname = '<?php echo $pname; ?>';
+         $.ajax({ url: 'change_status.php',
+            data: {pname: projname},
+            type: 'post',
+            success: function(out) {
+                  window.location = "projectpage.php?id="+projname;
+              }
+        });
     }
 
     function redir()
