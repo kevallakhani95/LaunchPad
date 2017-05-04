@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 03, 2017 at 10:30 AM
+-- Generation Time: May 04, 2017 at 07:05 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 7.1.1
 
@@ -27,41 +27,13 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `charges` (
-  `uname` varchar(45) NOT NULL,
-  `pname` varchar(45) NOT NULL,
-  `ccno` varchar(16) DEFAULT NULL,
-  `ctime` datetime NOT NULL,
+  `cid` int(11) NOT NULL,
+  `u_name` varchar(45) DEFAULT NULL,
+  `p_name` varchar(45) DEFAULT NULL,
+  `ccno` varchar(45) DEFAULT NULL,
+  `ctime` datetime DEFAULT NULL,
   `camt` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `charges`
---
-
-INSERT INTO `charges` (`uname`, `pname`, `ccno`, `ctime`, `camt`) VALUES
-('BobInBrooklyn', 'p3', '123456789', '2017-04-01 23:25:21', 4000),
-('BobInBrooklyn', 'p3', '123456789', '2017-04-19 16:09:26', 4000),
-('BobInBrooklyn', 'p3', '123456789', '2017-04-19 16:11:26', 4000),
-('BobInBrooklyn', 'p3', '123456789', '2017-04-19 16:13:09', 4000),
-('BobInBrooklyn', 'p3', '123456789', '2017-04-19 16:27:50', 4000),
-('BobInBrooklyn', 'p3', '123456789', '2017-04-19 16:28:50', 4000),
-('BobInBrooklyn', 'p3', '123456789', '2017-04-19 16:29:50', 4000),
-('jshah', 'p5', '456987321', '2017-04-01 23:25:21', 250),
-('klakhani', 'p1', '789654123', '2017-04-14 20:30:24', 2500),
-('klakhani', 'p1', '789654123', '2017-04-15 01:24:58', 2500),
-('kmodi', 'p1', '326598741', '2017-04-14 20:30:24', 3000),
-('kmodi', 'p1', '326598741', '2017-04-15 01:24:58', 3000),
-('kmodi', 'p3', '987654321', '2017-04-01 23:25:47', 2000),
-('kmodi', 'p3', '326598741', '2017-04-19 16:09:26', 2000),
-('kmodi', 'p3', '326598741', '2017-04-19 16:11:26', 2000),
-('kmodi', 'p3', '326598741', '2017-04-19 16:13:09', 2000),
-('kmodi', 'p3', '326598741', '2017-04-19 16:27:50', 2000),
-('kmodi', 'p3', '326598741', '2017-04-19 16:28:50', 2000),
-('kmodi', 'p3', '326598741', '2017-04-19 16:29:50', 2000),
-('kmodi', 'p5', '456789123', '2017-04-01 23:25:26', 750),
-('rchauhan', 'p4', '123654789', '2017-04-01 23:25:41', 2000),
-('rchauhan', 'sample_project', '123278984', '2017-04-19 16:27:50', 4000),
-('rchauhan', 'sample_project', '123278984', '2017-04-19 16:29:50', 4000);
 
 -- --------------------------------------------------------
 
@@ -81,9 +53,13 @@ CREATE TABLE `comments` (
 --
 
 INSERT INTO `comments` (`uname`, `comment`, `pname`, `commtime`) VALUES
+('jshah', 'Hey everyone', 'p6', '2017-05-04 03:04:29'),
+('jshah', 'Hi Jaimin, how arre you?', 'p6', '2017-05-04 03:07:56'),
 ('klakhani', 'mkmKJkln kjkj jkn kjbn kjbkjb', 'p1', '2017-04-11 23:25:22'),
 ('klakhani', 'pop', 'p4', '2017-05-03 02:11:23'),
 ('klakhani', 'lkl', 'p4', '2017-05-03 02:35:01'),
+('klakhani', 'Good Project', 'p6', '2017-05-03 17:01:18'),
+('klakhani', 'kjandk', 'p6', '2017-05-03 17:01:28'),
 ('kmodi', 'bn gh gjtgjugjh  gh  jhghjghj ', 'p2', '2017-04-08 23:28:22');
 
 -- --------------------------------------------------------
@@ -106,6 +82,7 @@ CREATE TABLE `creditcard` (
 
 INSERT INTO `creditcard` (`uname`, `ccno`, `cvv`, `exp_date_month`, `exp_date_year`) VALUES
 ('BobInBrooklyn', '8321654982568932', 321, 12, 2017),
+('jshah', '2414533453737378', 213, 8, 2019),
 ('klakhani', '1234567891258962', 125, 8, 2018),
 ('klakhani', '3216549877213213', 123, 7, 2017),
 ('klakhani', '4569871237896541', 789, 5, 2017),
@@ -158,23 +135,12 @@ CREATE TABLE `likes` (
 --
 
 INSERT INTO `likes` (`user_name`, `project_name`, `datetime`) VALUES
-('klakhani', 'p1', '2017-05-03 03:54:09'),
+('jshah', 'p6', '2017-05-03 17:53:11'),
+('klakhani', 'p1', '2017-05-01 03:54:09'),
 ('klakhani', 'p4', '2017-05-03 03:51:42'),
-('klakhani', 'p5', '2017-05-03 04:02:49'),
-('klakhani', 'p6', '2017-05-03 03:51:21');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `multimedia`
---
-
-CREATE TABLE `multimedia` (
-  `mid` int(11) NOT NULL,
-  `upid` int(11) DEFAULT NULL,
-  `pname` varchar(45) DEFAULT NULL,
-  `mfile` longblob
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+('klakhani', 'p5', '2017-04-29 04:02:49'),
+('klakhani', 'p6', '2017-05-03 03:51:21'),
+('kmodi', 'p6', '2017-03-03 17:58:18');
 
 -- --------------------------------------------------------
 
@@ -199,6 +165,9 @@ INSERT INTO `pledges` (`uname`, `pname`, `pamt`, `ptime`, `ccno`) VALUES
 ('BobInBrooklyn', 'p6', 450, '2017-05-01 08:31:34', '1234567891234567'),
 ('jshah', 'p5', 250, '2017-04-01 23:25:21', '3216549873216549'),
 ('klakhani', 'p1', 2500, '2017-04-05 23:15:22', '7896541231234567'),
+('klakhani', 'p6', 1450, '2017-05-04 01:04:46', '1234567893214567'),
+('klakhani', 'p6', 50, '2017-05-04 01:07:18', '1234567893214567'),
+('klakhani', 'p6', 20, '2017-05-04 01:44:19', '1234567891258962'),
 ('kmodi', 'p1', 3000, '2017-04-15 01:24:58', '3265987419876543'),
 ('kmodi', 'p3', 2000, '2017-04-01 23:25:10', '3265987411236547'),
 ('kmodi', 'p5', 750, '2017-04-01 23:25:58', '1456329879874563'),
@@ -209,17 +178,18 @@ INSERT INTO `pledges` (`uname`, `pname`, `pamt`, `ptime`, `ccno`) VALUES
 -- Triggers `pledges`
 --
 DELIMITER $$
-CREATE TRIGGER `trigger_1` AFTER INSERT ON `pledges` FOR EACH ROW begin
-
-if(select sum(pl.pamt) from pledges as pl where pl.pname = new.pname) >=  (select pr.pmaxamt from projects as pr where pr.pname = new.pname) then 
-insert into charges select uname, pname, ccno, NOW(), pamt from pledges where pname = new.pname;
+CREATE TRIGGER `trigger_2` AFTER INSERT ON `pledges` FOR EACH ROW begin
+if(select sum(p1.pamt) from pledges as p1 where p1.pname = new.pname) >=
+(select pr.pmaxamt from projects as pr where pr.pname = new.pname)
+then
+insert into charges (u_name, p_name, ccno, ctime, camt) select uname, pname, ccno, NOW(), pamt from pledges where pname=new.pname;
 end if;
-
-if(select sum(pl.pamt) from pledges as pl where pl.pname = new.pname) >=  (select pr.pmaxamt from projects as pr where pr.pname = new.pname) then 
-update projects 
-set pstatus = 'Complete'
+if(select sum(p1.pamt) from pledges as p1 where p1.pname = new.pname) >=
+(select pr.pmaxamt from projects as pr where pr.pname = new.pname)
+then
+update projects
+set pstatus = "Funded"
 where pname = new.pname;
-
 end if;
 end
 $$
@@ -306,7 +276,9 @@ INSERT INTO `tags` (`pname`, `ptag`) VALUES
 ('p2', 'music'),
 ('p3', 'taiku'),
 ('p4', 'jazz'),
-('p5 ', 'jazz');
+('p5 ', 'jazz'),
+('p6', 'Jazz'),
+('p6', 'Music');
 
 -- --------------------------------------------------------
 
@@ -315,12 +287,21 @@ INSERT INTO `tags` (`pname`, `ptag`) VALUES
 --
 
 CREATE TABLE `updates` (
-  `upid` int(11) NOT NULL,
-  `pname` varchar(45) DEFAULT NULL,
-  `upname` varchar(45) DEFAULT NULL,
-  `updesc` longtext,
+  `pname` varchar(45) NOT NULL,
+  `upname` varchar(45) NOT NULL,
+  `updesc` varchar(45) DEFAULT NULL,
+  `media` blob,
   `timestamp` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `updates`
+--
+
+INSERT INTO `updates` (`pname`, `upname`, `updesc`, `media`, `timestamp`) VALUES
+('p1', 'iuhi', 'ewoifjowe', '', '2017-05-04 00:14:09'),
+('p6', 'iuhiuh', '98u98dq', '', '2017-05-04 00:15:25'),
+('p6', 'oijdocxj', 'joewjdo', '', '2017-05-04 00:15:03');
 
 -- --------------------------------------------------------
 
@@ -363,8 +344,9 @@ INSERT INTO `users` (`uname`, `fname`, `lname`, `password`, `email`, `profile_pi
 -- Indexes for table `charges`
 --
 ALTER TABLE `charges`
-  ADD PRIMARY KEY (`uname`,`pname`,`ctime`),
-  ADD KEY `pname5_idx` (`pname`);
+  ADD PRIMARY KEY (`cid`),
+  ADD KEY `uname_idx` (`u_name`),
+  ADD KEY `pname_idx` (`p_name`);
 
 --
 -- Indexes for table `comments`
@@ -392,14 +374,6 @@ ALTER TABLE `follows`
 ALTER TABLE `likes`
   ADD PRIMARY KEY (`user_name`,`project_name`),
   ADD KEY `project_name_idx` (`project_name`);
-
---
--- Indexes for table `multimedia`
---
-ALTER TABLE `multimedia`
-  ADD PRIMARY KEY (`mid`),
-  ADD KEY `pname2_idx` (`pname`),
-  ADD KEY `upid_idx` (`upid`);
 
 --
 -- Indexes for table `pledges`
@@ -432,8 +406,7 @@ ALTER TABLE `tags`
 -- Indexes for table `updates`
 --
 ALTER TABLE `updates`
-  ADD PRIMARY KEY (`upid`),
-  ADD KEY `pname1_idx` (`pname`);
+  ADD PRIMARY KEY (`pname`,`upname`);
 
 --
 -- Indexes for table `users`
@@ -446,10 +419,10 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `updates`
+-- AUTO_INCREMENT for table `charges`
 --
-ALTER TABLE `updates`
-  MODIFY `upid` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `charges`
+  MODIFY `cid` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
@@ -458,8 +431,8 @@ ALTER TABLE `updates`
 -- Constraints for table `charges`
 --
 ALTER TABLE `charges`
-  ADD CONSTRAINT `pname5` FOREIGN KEY (`pname`) REFERENCES `projects` (`pname`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `uname7` FOREIGN KEY (`uname`) REFERENCES `users` (`uname`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `p_name` FOREIGN KEY (`p_name`) REFERENCES `projects` (`pname`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `u_name` FOREIGN KEY (`u_name`) REFERENCES `users` (`uname`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `comments`
@@ -487,13 +460,6 @@ ALTER TABLE `follows`
 ALTER TABLE `likes`
   ADD CONSTRAINT `project_name` FOREIGN KEY (`project_name`) REFERENCES `projects` (`pname`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `user_name` FOREIGN KEY (`user_name`) REFERENCES `users` (`uname`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `multimedia`
---
-ALTER TABLE `multimedia`
-  ADD CONSTRAINT `pname2` FOREIGN KEY (`pname`) REFERENCES `projects` (`pname`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `upid` FOREIGN KEY (`upid`) REFERENCES `updates` (`upid`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `pledges`
@@ -525,7 +491,7 @@ ALTER TABLE `tags`
 -- Constraints for table `updates`
 --
 ALTER TABLE `updates`
-  ADD CONSTRAINT `pname1` FOREIGN KEY (`pname`) REFERENCES `projects` (`pname`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `pname10` FOREIGN KEY (`pname`) REFERENCES `projects` (`pname`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 DELIMITER $$
 --
