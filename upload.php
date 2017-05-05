@@ -66,7 +66,7 @@
       $image = file_get_contents($image);
       $image = base64_encode($image);
 
-      $sqlquery = "insert into projects values('$pname', '$usrName', '$pdesc', '$pminamt', '$pmaxamt', '$penddate', '$pcompdate', 'Funding', now(), '$image','$location')";
+      $sqlquery = "insert into projects values('$pname', '$user_name', '$pdesc', '$pminamt', '$pmaxamt', '$penddate', '$pcompdate', 'Funding', now(), '$image','$location')";
       $result = $conn->query($sqlquery);
 
       for($i = 0; $i < sizeof($tagarr);$i++)
