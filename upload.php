@@ -50,6 +50,9 @@
       $tags = $_POST['tags'];
       $location = $_POST['location'];
 
+      $pname = htmlspecialchars($pname);
+      $pdesc = htmlspecialchars($pdesc);
+      $location = htmlspecialchars($location);
       
 
       $tagarr = explode(",", $tags);   

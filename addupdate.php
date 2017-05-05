@@ -80,9 +80,9 @@
         <strong>Well done!</strong> Your project has been successfully added</a>.
         </div>';
 
-      // echo '<script>
-      //         window.location = "projectpage.php?id='.$pname.'";
-      //       </script>';
+      echo '<script>
+              window.location = "projectpage.php?id='.$pname.'";
+            </script>';
 
   }
 ?>

@@ -79,16 +79,24 @@ if(isset($_POST['btn_sign_up']))
 	$fname = $_POST['fname'];
 	$lname = $_POST['lname'];
 	$email = $_POST['email'];
+	
+	$uname = htmlspecialchars($uname);
+	$password = htmlspecialchars($password);
+	$fname = htmlspecialchars($fname);
+	$lname = htmlspecialchars($lname);
+	$email = htmlspecialchars($email);
+
 	if(getimagesize($_FILES['propic']['tmp_name']) == FALSE)
 	{
-		echo "Please select an image.";							// Error message
+		//echo "Please select an image.";							// Error message
 	}
+	
 	$imageFile = $_FILES['propic']['name'];
 	$imgExt = strtolower(pathinfo($imageFile,PATHINFO_EXTENSION));
 	$image = addslashes($_FILES['propic']['tmp_name']);
 	$image = file_get_contents($image);
 	$image = base64_encode($image);
-	echo $imgExt;
+	
 	$uname = $conn->real_escape_string($uname);
 	$password = $conn->real_escape_string($password);
 	$sqlquery=$conn->query("select * from users where uname='$uname'");   

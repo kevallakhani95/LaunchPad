@@ -52,7 +52,7 @@ if(isset($_POST['btn_save']))
     <h1>Edit Card Details</h1>
   	<hr>
   		<form method="post" enctype="multipart/form-data" class="form-horizontal">
-		<div class="row">
+		    <div class="row">
       		<!-- edit form column -->
       		<div class="col-md-7 personal-info">
         
@@ -114,10 +114,9 @@ if(isset($_POST['btn_save']))
               	<a href="user_profile.php"><button type="button" class="btn btn-default">Cancel</button></a>
             	</div>
           	</div>
-      	
-      </div>
-  </div>
-  </form>
+          </div>
+        </div>
+      </form>
 </div>
 
 </body>
