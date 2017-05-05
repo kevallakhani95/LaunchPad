@@ -68,6 +68,9 @@ $count_updates = $sqlquery_up->num_rows;
 $sqlquery7 = "select ccno from creditcard where uname='$user_name'";
 $result7 = $conn->query($sqlquery7);
 
+$sqlquery_ratings = $conn->query("select * from ratings where uname = '$user_name' and rating IS NOT NULL");
+$count_ratings = $sqlquery_ratings->num_rows;
+
 $sqlquery_tag = $conn->query("select * from tags where pname='$pname'");
 
 $sqlquery_logs = $conn->query("insert into logs values('$user_name','$pname','visit',now())");
@@ -119,9 +122,14 @@ echo '
                   if($user_name == $row[1])
                   {
                     echo '<div class="pull-right">
-                    <button class="btn btn-warning" name = "add_update" onclick="update()">Add Update</button>
-                    <button class="btn btn-danger" name = "add_update" onclick="change_status()">Status: Complete</button>
-                    </div>';
+                    <button class="btn btn-warning" name = "add_update" onclick="update()" style="margin-right: 15px; ">Add Update</button>';
+                    
+                    if($row[7] != "Complete" && $row[7] == "Funded")
+                    {
+                        echo '<button class="btn btn-danger" name = "add_update" onclick="change_status()">Status: Complete</button>';
+                    }
+                    
+                    echo '</div>';
                   }
             
                 echo '<hr>
@@ -229,9 +237,19 @@ echo '
                             <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span>'.$count_likes['cl'].'</li>
                         </ul>
                     </div>
-                </div>
+                </div>';
 
-                 <div class="panel panel-default">
+                 if($row[7] == "Complete")
+                {
+                    echo '<div class="panel panel-default">
+                              <div class="panel-body">
+                                <a href="project_ratings.php?id='.$row[0].'" style="text-decoration: none; color: black;"><h4 class="text-right">
+                                <span class="pull-left"><strong>Ratings</strong></span>'.$count_ratings.'</h4></a>
+                              </div>
+                            </div>';
+                }
+
+                 echo '<div class="panel panel-default">
                   <div class="panel-body">
                     <h4 style="text-align: center;"><strong>'.$percent_funded.'%</strong> funded</h4>
                     <div class="progress progress-striped active" style="margin-top: 20px; margin-left: 15px; margin-right: 15px;">
@@ -310,13 +328,17 @@ echo '
     function change_status()
     {
         var projname = '<?php echo $pname; ?>';
-         $.ajax({ url: 'change_status.php',
+        
+          $.ajax({ url: 'change_status.php',
             data: {pname: projname},
             type: 'post',
             success: function(out) {
                   window.location = "projectpage.php?id="+projname;
               }
-        });
+        });  
+         
+
+
     }
 
     function redir()

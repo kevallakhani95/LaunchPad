@@ -134,11 +134,9 @@ $sqlquery_profilevisit = $conn->query("select distinct logdata from logs where u
         ';
       }
 
-      else if(!$row[3])                           //Cmpaign
+      else if(!$row[3])                           //Campaign
       {
-        echo'
-    
-        <div class="row">
+        echo'<div class="row">
           <div class="col-md-12">
           <a href="user_profile.php?id='.$row[2].'" style="text-decoration:none;">'.$row[2].'</a> added a new campaign
           <span class="pull-right text-muted small time-line">
@@ -184,7 +182,7 @@ $sqlquery_profilevisit = $conn->query("select distinct logdata from logs where u
     while($row = mysqli_fetch_array($sqlquery_search))
     {
          echo '<p class>
-                  <a href="search_feed.php?search='.$row[0].'">
+                  <a href="search_feed.php?search='.$row[0].'" style="text-decoration: none;">
                 '.$row[0].'</a>
                 </p>
                 ';
@@ -203,7 +201,7 @@ $sqlquery_profilevisit = $conn->query("select distinct logdata from logs where u
     while($row1 = mysqli_fetch_array($sqlquery_visit))
     {
          echo '<p class>
-                  <a href="projectpage.php?id='.$row1[0].'">
+                  <a href="projectpage.php?id='.$row1[0].'" style="text-decoration: none;">
                 '.$row1[0].'</a>
                 </p>
                 ';
@@ -220,7 +218,7 @@ $sqlquery_profilevisit = $conn->query("select distinct logdata from logs where u
     while($row2 = mysqli_fetch_array($sqlquery_profilevisit))
     {
          echo '<p class>
-                  <a href="user_profile.php?id='.$row2[0].'">
+                  <a href="user_profile.php?id='.$row2[0].'" style="text-decoration: none;">
                 '.$row2[0].'</a>
                 </p>
                 ';

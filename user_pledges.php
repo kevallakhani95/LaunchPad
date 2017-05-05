@@ -61,17 +61,36 @@ $row_user_details = mysqli_fetch_array($sqlquery);
 
         while($row_pledges = mysqli_fetch_array($query))
         {
-          echo '<tr>
-          <td>'.$row_pledges['pname'].'</td>
-          <td>'.$row_pledges['pamt'].'</td>
-          <td>'.$row_pledges['pdate'].'</td>';
-
-          if($user_name == $user)
+          $sqlquery_checkp = $conn->query("select * from charges where u_name = '$user_name' and p_name = '$row_pledges[0]' and camt = '$row_pledges[1]' and ccno = '$row_pledges[3]'");
+          $flag = $sqlquery_checkp->num_rows;
+          if($flag != '0')
           {
-            echo '<td>'.$row_pledges['ccno'].'</td>';
-          }
+            echo '<tr class="active">
+            <td>'.$row_pledges['pname'].'</td>
+            <td>'.$row_pledges['pamt'].'</td>
+            <td>'.$row_pledges['pdate'].'</td>';
 
-          echo '</tr>';
+            if($user_name == $user)
+            {
+              echo '<td>'.$row_pledges['ccno'].'</td>';
+            }
+            echo '</tr>';
+          }
+          else
+          {
+              echo '<tr>
+            <td>'.$row_pledges['pname'].'</td>
+            <td>'.$row_pledges['pamt'].'</td>
+            <td>'.$row_pledges['pdate'].'</td>';
+
+            if($user_name == $user)
+            {
+              echo '<td>'.$row_pledges['ccno'].'</td>';
+            }
+
+            echo '</tr>';
+          }
+          
         }
       ?>
     </tbody>

@@ -64,7 +64,7 @@ $sqlquery_users = $conn->query("select distinct * from users where fname like '%
                             or uname like '%{$searchtext}%'");
 $count_users = $sqlquery_users->num_rows;
 
-$sqlquery_logs = $conn->query("insert into logs values('$user_name','$searchtext','search',now())")
+$sqlquery_logs = $conn->query("insert into logs values('$user_name','$searchtext','search',now())");
 
 ?>
 

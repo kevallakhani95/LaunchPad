@@ -77,8 +77,6 @@ $follows_flag = $sqlquery_fol->num_rows;
 $sqlquery_follow = $conn->query("select * from follows where uname1 = '$user' and uname2 = '$user_name'");
 $following_flag = $sqlquery_follow->num_rows;
 
-
-
 if($follows_flag == 1)
 {
 	$a = 'Following';
@@ -102,11 +100,16 @@ else
              	
      			<?php
 
+     			$sqlquery_ratings = $conn->query("select * from ratings where uname = '$user_name' and rating IS NULL");
+     			$count_ratings = $sqlquery_ratings->num_rows;
+
      			if($user == $user_name)
      			{
      				echo '<a href="edit_profile.php"><button type="button" class="btn btn-success" style="margin-right: 5px;">Edit Profile</button></a> 
      			
-     				<a href="add_creditcard.php"><button type="button" class="btn btn-info">View / Add a payment card</button></a>';
+     				<a href="add_creditcard.php"><button type="button" class="btn btn-info">View / Add a payment card</button></a>
+
+     				<a href="ratings.php"><button type="button" class="btn btn-warning">Ratings  <span class="badge">'.$count_ratings.'</span></button></a>';
      			}	  
     			else
     			{
