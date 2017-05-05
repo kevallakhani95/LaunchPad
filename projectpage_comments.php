@@ -62,8 +62,14 @@ $sqlquery5 = "select * from likes where user_name='$user_name' and project_name=
 $result5 = $conn->query($sqlquery5);
 $row5 = mysqli_fetch_array($result5);
 
+$sqlquery_up = $conn->query("select pname, upname, updesc, media, date(timestamp) as ts from updates where pname = '$pname' order by timestamp desc");
+$count_updates = $sqlquery_up->num_rows;
+
 $sqlquery7 = "select ccno from creditcard where uname='$user_name'";
 $result7 = $conn->query($sqlquery7);
+
+$sqlquery_ratings = $conn->query("select * from ratings where uname = '$user_name' and rating IS NOT NULL");
+$count_ratings = $sqlquery_ratings->num_rows;
 
 $sqlquery_tag = $conn->query("select * from tags where pname='$pname'");
 
@@ -109,9 +115,22 @@ echo '
                 by <a href="user_profile.php?id='.$row[1].'" style="text-decoration:none;">'.$row[1].'</a><br>
                 <h4>Campaign Status : <span  class="label label-success">'.$row[7].'</span></h4>
                 <button class="btn btn-info btn" name = "like" onclick="likes()">
-                  <span class="'.$c.'" id ="sp1"></span> '.$a.'</button>
+                  <span class="'.$c.'" id ="sp1"></span> '.$a.'</button>';
             
-                <hr>
+                if($user_name == $row[1])
+                  {
+                    echo '<div class="pull-right">
+                    <button class="btn btn-warning" name = "add_update" onclick="update()" style="margin-right: 15px; ">Add Update</button>';
+                    
+                    if($row[7] != "Complete" && $row[7] == "Funded")
+                    {
+                        echo '<button class="btn btn-danger" name = "add_update" onclick="change_status()">Status: Complete</button>';
+                    }
+                    
+                    echo '</div>';
+                  }
+
+                echo '<hr>
                 <!-- Date/Time -->
                 <p><span class="glyphicon glyphicon-time"></span> Posted on '.$row[8].' 
                     <span class="pull-right">'.$row['location'].' <span class="glyphicon glyphicon-home"></span></span></p>
@@ -124,7 +143,8 @@ echo '
 
                 while($row_tags = mysqli_fetch_array($sqlquery_tag))
                 {
-                    echo '<span class="label label-default" style="font-size: 15px; margin-left: 10px;">'.$row_tags['ptag'].'</span>';
+                    echo '<span class="label label-default" style="font-size: 15px; margin-left: 10px;">
+                    <a href="search_feed.php?search='.$row_tags['ptag'].'" style="color: white; text-decoration: none">'.$row_tags['ptag'].'</a></label></span>';
                 }
                 
                 echo '</p><hr>';
@@ -210,9 +230,19 @@ echo '
                             <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span>'.$count_likes['cl'].'</li>
                         </ul>
                     </div>
-                </div>
+                </div>';
+                
+                if($row[7] == "Complete")
+                {
+                    echo '<div class="panel panel-default">
+                              <div class="panel-body">
+                                <a href="project_ratings.php?id='.$row[0].'" style="text-decoration: none; color: black;"><h4 class="text-right">
+                                <span class="pull-left"><strong>Ratings</strong></span>'.$count_ratings.'</h4></a>
+                              </div>
+                            </div>';
+                }
 
-                 <div class="panel panel-default">
+                 echo '<div class="panel panel-default">
                   <div class="panel-body">
                     <h4 style="text-align: center;"><strong>'.$percent_funded.'%</strong> funded</h4>
                     <div class="progress progress-striped active" style="margin-top: 20px; margin-left: 15px; margin-right: 15px;">
@@ -261,7 +291,11 @@ echo '
     
   ?>
   <script>
-       
+    function tag_clicked()
+    {
+        var tag = "<?php echo $row_tags['ptag'];?>";
+        alert(tag);
+    }
     function addcomm()
      {
         
@@ -294,6 +328,25 @@ echo '
         });
 
         }
+
+    function update()
+    {
+        var projname = '<?php echo $pname;?>';
+        window.location = "addupdate.php?id="+projname;
+    }
+
+    function change_status()
+    {
+        var projname = '<?php echo $pname; ?>';
+        
+          $.ajax({ url: 'change_status.php',
+            data: {pname: projname},
+            type: 'post',
+            success: function(out) {
+                  window.location = "projectpage.php?id="+projname;
+              }
+        });  
+    }
 
     function redir()
     {

@@ -104,7 +104,7 @@ $count_rat = $sqlquery_rat->num_rows;
 
         if($count_rat == 0)
          {
-          echo '<h4 class="text-muted" style="text-align: center; font-size: 30px;">This user has not rated any Campaign!</h4>';
+          echo '<h4 class="text-muted" style="text-align: center; font-size: 30px;">You have not rated any campaign yet!</h4>';
          }
 
         while($row_rat = mysqli_fetch_array($sqlquery_rat))
