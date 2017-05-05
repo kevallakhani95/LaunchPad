@@ -62,14 +62,11 @@ $sqlquery5 = "select * from likes where user_name='$user_name' and project_name=
 $result5 = $conn->query($sqlquery5);
 $row5 = mysqli_fetch_array($result5);
 
-$sqlquery_up = $conn->query("select pname, upname, updesc, media, date(timestamp) as ts from updates where pname = '$pname' order by timestamp desc");
+$sqlquery_up = $conn->query("select pname, upname, updesc, media, date(timestamp) as ts, mime from updates where pname = '$pname' order by timestamp desc");
 $count_updates = $sqlquery_up->num_rows;
 
 $sqlquery7 = "select ccno from creditcard where uname='$user_name'";
 $result7 = $conn->query($sqlquery7);
-
-$sqlquery_ratings = $conn->query("select * from ratings where uname = '$user_name' and rating IS NOT NULL");
-$count_ratings = $sqlquery_ratings->num_rows;
 
 $sqlquery_tag = $conn->query("select * from tags where pname='$pname'");
 
@@ -122,14 +119,9 @@ echo '
                   if($user_name == $row[1])
                   {
                     echo '<div class="pull-right">
-                    <button class="btn btn-warning" name = "add_update" onclick="update()" style="margin-right: 15px; ">Add Update</button>';
-                    
-                    if($row[7] != "Complete" && $row[7] == "Funded")
-                    {
-                        echo '<button class="btn btn-danger" name = "add_update" onclick="change_status()">Status: Complete</button>';
-                    }
-                    
-                    echo '</div>';
+                    <button class="btn btn-warning" name = "add_update" onclick="update()">Add Update</button>
+                    <button class="btn btn-danger" name = "add_update" onclick="change_status()">Status: Complete</button>
+                    </div>';
                   }
             
                 echo '<hr>
@@ -197,7 +189,20 @@ echo '
                                 <div class="col-md-3">';
                                 if(!empty($row_updates['media']))
                                 {
-                                    echo '<img class="img-responsive" alt="" src="data:image;base64,'.$row_updates['media'].'" style="max-width: 200px; max-height: 100px; overflow: hidden;">';
+
+                                    if($row_updates['mime']=='image/jpeg' || $row_updates['mime']=='image/png' || $row_updates['mime']=='image/gif' )
+                                    {  
+                                      echo '<img class="img-responsive" alt="" src="data:image;base64,'.base64_encode($row_updates['media']).'" style="max-width: 200px; max-height: 100px; overflow: hidden;">';
+                                    } 
+
+                                    else
+                                    {
+                                      echo'
+                                      <video style="max-width: 200px; max-height: 100px; overflow: hidden;" controls>
+                                        <source src="data:video;base64,'.base64_encode($row_updates['media']).'" type="'.$row_updates['mime'].'">
+                                      
+                                      </video>';
+                                    }
                                 }
                                 else
                                 {
@@ -237,19 +242,9 @@ echo '
                             <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span>'.$count_likes['cl'].'</li>
                         </ul>
                     </div>
-                </div>';
+                </div>
 
-                 if($row[7] == "Complete")
-                {
-                    echo '<div class="panel panel-default">
-                              <div class="panel-body">
-                                <a href="project_ratings.php?id='.$row[0].'" style="text-decoration: none; color: black;"><h4 class="text-right">
-                                <span class="pull-left"><strong>Ratings</strong></span>'.$count_ratings.'</h4></a>
-                              </div>
-                            </div>';
-                }
-
-                 echo '<div class="panel panel-default">
+                 <div class="panel panel-default">
                   <div class="panel-body">
                     <h4 style="text-align: center;"><strong>'.$percent_funded.'%</strong> funded</h4>
                     <div class="progress progress-striped active" style="margin-top: 20px; margin-left: 15px; margin-right: 15px;">
@@ -328,17 +323,13 @@ echo '
     function change_status()
     {
         var projname = '<?php echo $pname; ?>';
-        
-          $.ajax({ url: 'change_status.php',
+         $.ajax({ url: 'change_status.php',
             data: {pname: projname},
             type: 'post',
             success: function(out) {
                   window.location = "projectpage.php?id="+projname;
               }
-        });  
-         
-
-
+        });
     }
 
     function redir()

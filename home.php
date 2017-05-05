@@ -56,6 +56,7 @@ $sqlquery_search = $conn->query("select distinct logdata from logs where uname =
 $sqlquery_visit = $conn->query("select distinct logdata from logs where uname = '$user_name' and logtype='visit' order by logtime desc limit 3;"); 
 
 $sqlquery_profilevisit = $conn->query("select distinct logdata from logs where uname = '$user_name' and logtype='profilevisit' order by logtime desc limit 3;"); 
+
 ?>
 <div class="container">
 <div class="row">
@@ -101,6 +102,8 @@ $sqlquery_profilevisit = $conn->query("select distinct logdata from logs where u
 
   else if(!$row[2])                             //Updates
   {
+    $sqlquery1 = $conn->query("select * from updates where upname ='$row[0]' and pname='$row[6]'");
+    $row1 = mysqli_fetch_array($sqlquery1);
     echo'
         <div class="row">
           <div class="col-md-12">
@@ -113,14 +116,39 @@ $sqlquery_profilevisit = $conn->query("select distinct logdata from logs where u
         </div>
         <div class="row">
           <div class="col-md-3">';
+              // echo $row1[5];
             if(!empty($row[3]))
                 {
-                    echo '<img class="img-responsive" alt="" src="data:image;base64,'.$row[3].'" style="max-width: 200px; max-height: 100px; overflow: hidden;">';
+
+                    if($row1[5]=='image/jpeg' || $row1[5]=='image/png' || $row1[5]=='image/gif')
+                    {  
+                      echo '<img class="img-responsive" alt="" src="data:image;base64,'.base64_encode($row[3]).'" style="max-width: 200px; max-height: 100px; overflow: hidden;">';
+                    } 
+
+                    else
+                    {
+                      echo'
+                      <video style="max-width: 200px; max-height: 100px; overflow: hidden;" controls>
+                        <source src="data:video;base64,'.base64_encode($row[3]).'" type="'.$row1[5].'">
+                      
+                      </video>';
+                    }
+
+                    // else
+                    // {
+                    //   echo'
+                    //   <audio controls="controls" style="max-width: 200px; max-height: 100px; overflow: hidden;">
+                    //     Your browser does not support the <code>audio</code> element.
+                    //     <source src="testmp3testfile_64kb.m3u" type = "audio/x-mpegurl">
+                    //   </audio>';
+
+                    // }
                 }
                 else
                 {
                     echo '<img class="img-responsive" alt="" src="default-cover-image.jpg" style="max-width: 200px; max-height: 100px; overflow: hidden;">';
                 }
+
           echo'
           </div>
           <div class="col-md-9">      
@@ -134,9 +162,11 @@ $sqlquery_profilevisit = $conn->query("select distinct logdata from logs where u
         ';
       }
 
-      else if(!$row[3])                           //Campaign
+      else if(!$row[3])                           //Cmpaign
       {
-        echo'<div class="row">
+        echo'
+    
+        <div class="row">
           <div class="col-md-12">
           <a href="user_profile.php?id='.$row[2].'" style="text-decoration:none;">'.$row[2].'</a> added a new campaign
           <span class="pull-right text-muted small time-line">
@@ -182,7 +212,7 @@ $sqlquery_profilevisit = $conn->query("select distinct logdata from logs where u
     while($row = mysqli_fetch_array($sqlquery_search))
     {
          echo '<p class>
-                  <a href="search_feed.php?search='.$row[0].'" style="text-decoration: none;">
+                  <a href="search_feed.php?search='.$row[0].'">
                 '.$row[0].'</a>
                 </p>
                 ';
@@ -201,7 +231,7 @@ $sqlquery_profilevisit = $conn->query("select distinct logdata from logs where u
     while($row1 = mysqli_fetch_array($sqlquery_visit))
     {
          echo '<p class>
-                  <a href="projectpage.php?id='.$row1[0].'" style="text-decoration: none;">
+                  <a href="projectpage.php?id='.$row1[0].'">
                 '.$row1[0].'</a>
                 </p>
                 ';
@@ -218,7 +248,7 @@ $sqlquery_profilevisit = $conn->query("select distinct logdata from logs where u
     while($row2 = mysqli_fetch_array($sqlquery_profilevisit))
     {
          echo '<p class>
-                  <a href="user_profile.php?id='.$row2[0].'" style="text-decoration: none;">
+                  <a href="user_profile.php?id='.$row2[0].'">
                 '.$row2[0].'</a>
                 </p>
                 ';

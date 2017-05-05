@@ -47,18 +47,32 @@
       $tagarr = explode(",", $tags);   
      
      
-      if(getimagesize($_FILES['uppic']['tmp_name']) == FALSE)
-      {
-        // echo "Please select an image.";
-      }
+      // if(getimagesize($_FILES['uppic']['tmp_name']) == FALSE)
+      // {
+      //   // echo "Please select an image.";
+      // }
       
-      $imageFile = $_FILES['uppic']['name'];
-      $imgExt = strtolower(pathinfo($imageFile,PATHINFO_EXTENSION));
-      $image = addslashes($_FILES['uppic']['tmp_name']);
-      $image = file_get_contents($image);
-      $image = base64_encode($image);
+      $fileName = $_FILES['uppic']['name'];
+      $tmpName  = $_FILES['uppic']['tmp_name'];
+      $fileSize = intval($_FILES['uppic']['size']);
+      $fileType = $_FILES['uppic']['type'];
 
-      $sqlquery = "insert into updates values('$pname', '$upname', '$updesc', '$image', now())";
+
+      $fp      = fopen($tmpName, 'r');
+      $content = fread($fp, filesize($tmpName));
+      $content = addslashes($content);
+      fclose($fp);
+
+      if(!get_magic_quotes_gpc())
+      {
+          $fileName = addslashes($fileName);
+      }
+      // $imgExt = strtolower(pathinfo($imageFile,PATHINFO_EXTENSION));
+      // $image = addslashes($_FILES['uppic']['tmp_name']);
+      // $image = file_get_contents($image);
+      // $image = base64_encode($image);
+
+      $sqlquery = "insert into updates values('$pname', '$upname', '$updesc', '$content', now(),'$fileType','$fileSize','$fileName')";
       $result = $conn->query($sqlquery);
 
        echo '<div class="alert alert-dismissible alert-success" style = "margin-top:-22px">
@@ -66,9 +80,9 @@
         <strong>Well done!</strong> Your project has been successfully added</a>.
         </div>';
 
-      echo '<script>
-              window.location = "projectpage.php?id='.$pname.'";
-            </script>';
+      // echo '<script>
+      //         window.location = "projectpage.php?id='.$pname.'";
+      //       </script>';
 
   }
 ?>
@@ -92,9 +106,9 @@
     </div>
 
     <div class="form-group">
-      <label for="contact" class="col-lg-2 control-label">Update Media Image:</label>
+      <label for="contact" class="col-lg-2 control-label">Update Media :</label>
       <div class="col-lg-4">
-        <input class="input-group" type="file" name="uppic" accept="image/*" style="margin-top: 12px"/>
+        <input class="input-group" type="file" name="uppic" style="margin-top: 12px"/><br>(jpeg,png,gif,mp3,mp4 only)
       </div>
     </div>
 
