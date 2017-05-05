@@ -70,6 +70,8 @@ $result7 = $conn->query($sqlquery7);
 
 $sqlquery_tag = $conn->query("select * from tags where pname='$pname'");
 
+$sqlquery_logs = $conn->query("insert into logs values('$user_name','$pname','visit',now())");
+
 if(!$row5[0])
 {
     $a = 'Like';

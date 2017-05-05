@@ -16,7 +16,14 @@ error_reporting(0);
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-+ENW/yibaokMnme+vBLnHMphUYxHs34h9lpdbSLuAwGkOKFRl4C34WkjazBtb7eT" crossorigin="anonymous">
      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+     <style>
+     .panel-body  {
+    word-break:break-all
+}
+</style>
 </head>
+
 <body>
 <?php
 session_start();										
@@ -42,8 +49,18 @@ $sqlquery=$conn->query("select NULL, f.uname2, c.pname, date(c.commtime),c.commt
                         union
                         (select p.pname, p.pdesc, p.uname,NULL, p.datetime as d, p.cover_page, date(p.datetime),NULL
                         from follows f,projects p
-                        where f.uname1 ='$user_name' and f.uname2 = p.uname ) order by d desc");   
+                        where f.uname1 ='$user_name' and f.uname2 = p.uname ) order by d desc");  
+
+$sqlquery_search = $conn->query("select distinct logdata from logs where uname = '$user_name' and logtype='search' order by logtime desc limit 3;"); 
+
+$sqlquery_visit = $conn->query("select distinct logdata from logs where uname = '$user_name' and logtype='visit' order by logtime desc limit 3;"); 
+
+$sqlquery_profilevisit = $conn->query("select distinct logdata from logs where uname = '$user_name' and logtype='profilevisit' order by logtime desc limit 3;"); 
 ?>
+<div class="container">
+<div class="row">
+
+<div class="col-lg-9">
 
 <?php
   while($row = mysqli_fetch_array($sqlquery))
@@ -51,7 +68,7 @@ $sqlquery=$conn->query("select NULL, f.uname2, c.pname, date(c.commtime),c.commt
   if(!$row[1])                                    //Likes
  {   
       echo'
-        <div class="container" style="">
+          
           <div class="row">
             <div class="col-md-12"> 
                 <span class="pull-right text-muted small time-line">
@@ -62,13 +79,13 @@ $sqlquery=$conn->query("select NULL, f.uname2, c.pname, date(c.commtime),c.commt
             </div>
           </div>
         <hr>
-        </div>
+        
         ';
   }
   else if(!$row[0])                              //Comments
   {
       echo'
-        <div class="container" style="">
+        
           <div class="row">
             <div class="col-md-12"> 
                 <span class="pull-right text-muted small time-line">
@@ -79,16 +96,12 @@ $sqlquery=$conn->query("select NULL, f.uname2, c.pname, date(c.commtime),c.commt
             </div>
           </div>
         <hr>
-        </div>
         ';
   }
 
   else if(!$row[2])                             //Updates
   {
     echo'
-    <div class="container" style="">
-      <div class="row">
-      <div class="col-md-12">
         <div class="row">
           <div class="col-md-12">
             Update on <a href="projectpage.php?id='.$row[6].'" style="text-decoration:none;">'.$row[6].'</a> by <a href="user_profile.php?id='.$row[5].'" style="text-decoration:none;">'.$row[5].'</a>
@@ -117,16 +130,14 @@ $sqlquery=$conn->query("select NULL, f.uname2, c.pname, date(c.commtime),c.commt
           </div>
         </div>
         <hr>
-        </div>
+        
         ';
       }
 
       else if(!$row[3])                           //Cmpaign
       {
         echo'
-    <div class="container" style="">
-      <div class="row">
-      <div class="col-md-12">
+    
         <div class="row">
           <div class="col-md-12">
           <a href="user_profile.php?id='.$row[2].'" style="text-decoration:none;">'.$row[2].'</a> added a new campaign
@@ -137,7 +148,7 @@ $sqlquery=$conn->query("select NULL, f.uname2, c.pname, date(c.commtime),c.commt
           </div>
         </div>
         <div class="row">
-          <div class="col-md-2">';
+          <div class="col-md-3">';
                 if(!empty($row[5]))
                 {
                   echo '<img class="img-responsive" alt="" src="data:image;base64,'.$row[5].'" style="max-width: 200px; max-height: 100px; overflow: hidden;">';
@@ -148,20 +159,78 @@ $sqlquery=$conn->query("select NULL, f.uname2, c.pname, date(c.commtime),c.commt
                 }
           echo'
           </div>
-          <div class="col-md-10">      
+          <div class="col-md-9">      
             <p>
               '.$row[1].'
             </p>
           </div>
         </div>
         <hr>
-        </div>';
+        ';
 
       }
   
 }
 ?>
+</div>
+<div class="col-lg-3">
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Searches</h3>
+  </div>
+  <div class="panel-body">
   
+    <?php
+    while($row = mysqli_fetch_array($sqlquery_search))
+    {
+         echo '<p class>
+                  <a href="search_feed.php?search='.$row[0].'">
+                '.$row[0].'</a>
+                </p>
+                ';
+    }
+    ?>
+  
+  </div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Project Visits</h3>
+  </div>
+    <div class="panel-body">
+       <?php
+    while($row1 = mysqli_fetch_array($sqlquery_visit))
+    {
+         echo '<p class>
+                  <a href="projectpage.php?id='.$row1[0].'">
+                '.$row1[0].'</a>
+                </p>
+                ';
+    }
+    ?>
+    </div>
+  </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Recent Profile Visits</h3>
+  </div>
+  <div class="panel-body">
+    <?php
+    while($row2 = mysqli_fetch_array($sqlquery_profilevisit))
+    {
+         echo '<p class>
+                  <a href="user_profile.php?id='.$row2[0].'">
+                '.$row2[0].'</a>
+                </p>
+                ';
+    }
+    ?>
+  </div>
+</div>
+</div>
+</div>
+</div>
 
 </body>
 </html>
